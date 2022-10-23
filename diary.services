@@ -1,0 +1,15 @@
+[Unit]
+Description=Diary - Telegram Bot
+After=network-online.target
+
+[Service]
+ExecStart=poetry run python3 main.py
+Restart=always
+RestartSec=15s
+KillMode=process
+TimeoutSec=infinity
+User=ubuntu
+Group=sudo
+
+[Install]
+WantedBy=multi-user.target
