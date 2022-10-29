@@ -131,3 +131,6 @@ dmypy.json
 #poetry
 poetry.lock
 pyproject.toml
+
+#another
+auth_data.py
