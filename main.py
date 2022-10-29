@@ -27,7 +27,7 @@ async def send_welcome(message: types.Message):
 @dp.message_handler(commands=['add'])
 async def send_welcome(message: types.Message):
     expense = add_work(message.text)
-    await message.reply("Hi!\nI'm EchoBot!\nPowered by aiogram.")
+    await message.reply(f"Hi!\nI'm EchoBot!\n{expense}.")
 
 
 
