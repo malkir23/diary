@@ -1,0 +1,55 @@
+name: Pytest
+
+on: [push]
+
+jobs:
+  Tests:
+    runs-on: ubuntu-latest
+
+    env:
+      MONGO_INITDB_ROOT_USERNAME: ${{secrets.MONGO_INITDB_ROOT_USERNAME}}
+      MONGO_INITDB_ROOT_PASSWORD: ${{secrets.MONGO_INITDB_ROOT_PASSWORD}}
+      MONGO_INITDB_DATABASE: ${{secrets.MONGO_INITDB_DATABASE}}
+      DATABASE_URL: ${{secrets.API_KEY}}
+      TESTS: true
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Clear old docker data
+        run: docker-compose down
+
+      - name: Run docker
+        run: docker-compose up --build -d
+
+      - name: Wait for services to be up and running
+        run: |
+          while ! nc -z 0.0.0.0 8000; do sleep 1; done
+          while ! nc -z 0.0.0.0 6379; do sleep 1; done
+          while ! nc -z 0.0.0.0 6000; do sleep 1; done
+
+      - name: Check running containers
+        run: docker-compose ps -a
+
+      - name: Check logs
+        run: docker-compose logs app
+
+      - name: Test with pytest
+        run: |
+          docker-compose exec -T app pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=app tests/ | tee pytest-coverage.txt
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@master
+        if: always()
+        with:
+          action_fail: true
+          files: |
+            pytest.xml
