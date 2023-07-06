@@ -1,7 +1,7 @@
-from app.services.modules import caluclate_modules_result
-from app.services.modules_mock_data import modules
-from app.db.base import Data, Adjustment
-from app.settings.config import settings
+from backend.services.modules import caluclate_modules_result
+from backend.services.modules_mock_data import modules
+from backend.db.base import Data, Adjustment
+from backend.settings.config import settings
 from tests.data_test import expected_result, template_adjustment
 
 

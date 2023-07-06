@@ -59,3 +59,4 @@ httpx==0.23.3
 pytest-cov==4.0.0
 mongomock==4.1.2
 openpyxl==3.1.2
+python-multipart

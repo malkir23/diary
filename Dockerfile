@@ -5,6 +5,6 @@ WORKDIR /code
 COPY ./requirements.txt /code/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-RUN apt update && apt install supervisor -y
+RUN apt update && apt upgrade -y
 
-COPY ./app /code/app
+COPY ./backend /code/backend

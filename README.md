@@ -34,7 +34,7 @@ docker-compose up mongo
 ```
 <b>Run server</b> option `up`, `down`, `restart`
 ```bash
-docker-compose up app
+docker-compose up backend
 ```
 <b>Run celery beat & worker</b> option `up`, `down`, `restart`
 ```bash

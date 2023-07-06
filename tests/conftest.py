@@ -1,7 +1,7 @@
 from copy import deepcopy
 
-from app.main import app
-from app.settings.config import settings
+from backend.main import backend
+from backend.settings.config import settings
 from fastapi.testclient import TestClient
 from pymongo import MongoClient
 from pytest import fixture
@@ -24,6 +24,6 @@ def template_month_asset():
 # @pytest.fixture(scope="session")
 # def client():
 # https://github.com/tiangolo/fastapi/issues/5253
-#     app.dependency_overrides[AuthJWT] = MagicMock()
-#     return TestClient(app)
-# #     return TestClient(app)
+#     backend.dependency_overrides[AuthJWT] = MagicMock()
+#     return TestClient(backend)
+# #     return TestClient(backend)

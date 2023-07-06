@@ -1,5 +1,5 @@
 from datetime import datetime
-from app.services.modules_mock_data import BUY_X, BUY_2X, SELL_X, \
+from backend.services.modules_mock_data import BUY_X, BUY_2X, SELL_X, \
     BOTTOM, TOP, MID, BEARISH, BULLISH, N_A, SELL_ENTIRE_POSITION
 
 template_asset = {

@@ -34,11 +34,11 @@ jobs:
         run: docker-compose ps -a
 
       - name: Check logs
-        run: docker-compose logs app
+        run: docker-compose logs backend
 
       - name: Test with pytest
         run: |
-          docker-compose exec -T app pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=app tests/ | tee pytest-coverage.txt
+          docker-compose exec -T backend pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=backend tests/ | tee pytest-coverage.txt
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main

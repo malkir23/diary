@@ -1,11 +1,11 @@
 version: '3'
 services:
 
-  app:
+  backend:
     build:
       context: .
       dockerfile: Dockerfile
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn backend.main:backend --host 0.0.0.0 --port 8000 --reload
     stdin_open: true
     tty: true
     ports:
@@ -17,34 +17,14 @@ services:
     volumes:
       - .:/code
 
-  crontab:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: ["supervisord", "-c", "supervisord.conf"]
-
-    stdin_open: true
-    tty: true
-    depends_on:
-      - mongo
-      - redis
-    links:
-      - mongo
-      - redis
-    volumes:
-      - .:/code
-
   mongo:
     image: mongo:latest
     container_name: mongo_fuzzy_db
     env_file:
-      - app/.env
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      - backend/.env
     volumes:
       - mongo:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
     ports:
       - '6000:27017'
 
