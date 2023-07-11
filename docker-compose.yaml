@@ -28,10 +28,5 @@ services:
     ports:
       - '6000:27017'
 
-  redis:
-    image: redis:latest
-    ports:
-      - '6379:6379'
-
 volumes:
   mongo:

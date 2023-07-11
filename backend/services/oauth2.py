@@ -4,7 +4,7 @@ from backend.services.utils import utc_now
 from backend.settings.config import settings
 from fastapi import Depends
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 from jose import jwt
 from fastapi import status, HTTPException, Depends
 from backend.db.base import user_db

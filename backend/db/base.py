@@ -31,33 +31,6 @@ class FuzzyTables(ConnectionDB):
         user.create_index([("email", ASCENDING)], unique=True)
         return user
 
-    @staticmethod
-    def data(database_name=None):
-        if not database_name:
-            database_name = settings.MONGO_INITDB_DATABASE
-        data = ConnectionDB().client[database_name].data
-        return data
-
-    @staticmethod
-    def modules(database_name=None):
-        if not database_name:
-            database_name = settings.MONGO_INITDB_DATABASE
-        modules = ConnectionDB().client[database_name].modules
-        return modules
-
-    @staticmethod
-    def config(database_name=None):
-        if not database_name:
-            database_name = settings.MONGO_INITDB_DATABASE
-        config = ConnectionDB().client[database_name].config
-        return config
-
-    @staticmethod
-    def adjustment(database_name=None):
-        if not database_name:
-            database_name = settings.MONGO_INITDB_DATABASE
-        config_table = ConnectionDB().client[database_name].adjustment
-        return config_table
 
     @staticmethod
     def logs(database_name=None):
@@ -66,18 +39,6 @@ class FuzzyTables(ConnectionDB):
         logs = ConnectionDB().client[database_name].logs
         return logs
 
-    @staticmethod
-    def asset_extra_data(database_name=None):
-        if not database_name:
-            database_name = settings.MONGO_INITDB_DATABASE
-        asset_extra_data = ConnectionDB().client[database_name].asset_extra_data
-        return asset_extra_data
-
 
 user_db = FuzzyTables.user()
-Data = FuzzyTables.data()
-Modules = FuzzyTables.modules()
-Config = FuzzyTables.config()
-Adjustment = FuzzyTables.adjustment()
 Logs = FuzzyTables.logs()
-AssetExtraData = FuzzyTables.asset_extra_data()

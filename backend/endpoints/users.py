@@ -3,16 +3,13 @@ from fastapi import HTTPException, status, Depends, APIRouter
 from backend.models.users import AssignRole, UserUpdateSchema, SetNewPassword
 from bson.objectid import ObjectId
 from backend.services.oauth2 import check_auth, check_admin
-from backend.services.user import userSerializers, PasswordService, users_log
-from datetime import datetime
-
+from backend.services.user import userSerializers, PasswordService
 from backend.services.utils import utc_now
 
 router = APIRouter()
 
 
 @router.post("/assign_role/{user_id}")
-@users_log
 async def assign_role(
     user: AssignRole, user_id: str, is_admin: dict = Depends(check_admin),
     auth_user: dict = Depends(check_auth)
@@ -46,7 +43,6 @@ async def get_one_user(user_id: str, auth_user: dict = Depends(check_auth)):
 
 
 @router.post("/update_user/{user_id}")
-@users_log
 async def update_user(
     user: UserUpdateSchema, user_id: str, is_admin: dict = Depends(check_admin),
     auth_user: dict = Depends(check_auth)
@@ -68,7 +64,6 @@ async def update_user(
 
 
 @router.post("/update_password/{user_id}", status_code=status.HTTP_202_ACCEPTED)
-@users_log
 async def set_new_password(
     user: SetNewPassword, user_id: str, is_admin: dict = Depends(check_admin),
     auth_user: dict = Depends(check_auth)
