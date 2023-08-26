@@ -2,11 +2,11 @@ from passlib.context import CryptContext
 from fastapi import status, HTTPException, BackgroundTasks, Depends
 from pydantic import BaseModel
 from functools import wraps
-from backend.db.base import user_db
-from bson.objectid import ObjectId
+from backend.quaries.users import user_db
 
 
-class userSerializers:
+
+class UserSerializers:
     @staticmethod
     def userEntity(user: dict) -> dict:
         return {

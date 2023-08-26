@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from .settings.config import CookieSettings
-from .endpoints import auth, users
+from .endpoints import auth
 from fastapi_jwt_auth import AuthJWT
 from fastapi.responses import JSONResponse
 
@@ -14,12 +14,11 @@ def get_config():
 
 backend = FastAPI(dependencies=[Depends(AuthJWT)])
 origins = [
-    "http://localhost",
-    "http://localhost:3000",
-    "http://localhost:9090",
-    "https://example.com",
-    "http://localhost:8000",
-    "https://dev.d2xjxa21r0l1uv.amplifybackend.com/"
+    # "http://localhost",
+    # "http://localhost:5432",
+    # "https://example.com",
+    # "http://localhost:8000",
+    "*"
 ]
 backend.add_middleware(
     CORSMiddleware,
@@ -31,7 +30,7 @@ backend.add_middleware(
 
 
 backend.include_router(auth.router, tags=["Auth"], prefix="/api/auth")
-backend.include_router(users.router, tags=["User"], prefix="/api/user")
+# backend.include_router(users.router, tags=["User"], prefix="/api/user")
 
 
 @backend.exception_handler(RequestValidationError)

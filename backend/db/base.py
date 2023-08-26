@@ -1,44 +1,43 @@
 from backend.settings.config import settings
-from pymongo import ASCENDING, mongo_client
-from mongomock import MongoClient as MockMongoClient
-
-class ConnectionDB:
-    __instance = None
-
-    class __ConnectionDB:
-        def __init__(self):
-            # Initialise mongo client
-            if not settings.TESTING:
-                self.client = mongo_client.MongoClient(settings.DATABASE_URL)
-            else:
-                self.client = MockMongoClient()
-
-    def __init__(self):
-        if not ConnectionDB.__instance:
-            ConnectionDB.__instance = ConnectionDB.__ConnectionDB()
-
-    def __getattr__(self, item):
-        return getattr(self.__instance, item)
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy import select
+from sqlalchemy import Column, Integer, String, create_engine, and_
 
 
-class FuzzyTables(ConnectionDB):
-    @staticmethod
-    def user(database_name=None):
-        if not database_name:
-            database_name = settings.MONGO_INITDB_DATABASE
-
-        user = ConnectionDB().client[database_name].users
-        user.create_index([("email", ASCENDING)], unique=True)
-        return user
+DATABASE_URL = f"postgresql+asyncpg://{settings.POSTGRESQL_INITDB_ROOT_USERNAME}:{settings.POSTGRESQL_INITDB_ROOT_PASSWORD}@postgres_db:{settings.POSTGRES_PORT}/{settings.POSTGRESQL_INITDB_DATABASE}"
 
 
-    @staticmethod
-    def logs(database_name=None):
-        if not database_name:
-            database_name = settings.MONGO_INITDB_DATABASE
-        logs = ConnectionDB().client[database_name].logs
-        return logs
+class DatabaseConnection:
+    _instance = None
 
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.engine = create_async_engine(
+                DATABASE_URL, echo=True, future=True
+            )
+        return cls._instance
 
-user_db = FuzzyTables.user()
-Logs = FuzzyTables.logs()
+    @classmethod
+    async def get(cls, base, request=None):
+        async with AsyncSession(cls._instance.engine) as session:
+            stmt = select(base)
+            if request:
+                request = and_(*[
+                    getattr(base, key) == value for key, value in request.items()
+                ])
+                stmt = stmt.where(request)
+            result = await session.execute(stmt)
+            users = result.scalars().all()
+
+            return list(users)
+
+    @classmethod
+    async def insert(cls, base, request=None):
+        async with AsyncSession(cls._instance.engine) as session:
+            new_data = base(**request)
+
+            session.add(new_data)
+            await session.commit()
+            await session.refresh(new_data)
+            return new_data

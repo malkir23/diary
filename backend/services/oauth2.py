@@ -7,10 +7,9 @@ from fastapi import Depends
 from datetime import timedelta
 from jose import jwt
 from fastapi import status, HTTPException, Depends
-from backend.db.base import user_db
+from backend.quaries.users import Users
 from fastapi_jwt_auth import AuthJWT
-from bson.objectid import ObjectId
-from backend.services.user import userSerializers
+from backend.services.user import UserSerializers
 
 
 async def set_auth_tokens(subject: str, Authorize: AuthJWT = Depends()) -> str:
@@ -52,8 +51,8 @@ def check_auth(Authorize: AuthJWT = Depends()) -> dict:
     try:
         Authorize.jwt_required()
         user_id = Authorize.get_jwt_subject()
-        user = userSerializers.userEntity(
-            user_db.find_one({"_id": ObjectId(str(user_id))})
+        user = UserSerializers.userEntity(
+            Users.find_one({"id": user_id})
         )
 
         if not user:

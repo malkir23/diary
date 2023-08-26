@@ -1,14 +1,19 @@
-from pydantic import BaseSettings, EmailStr
+from pydantic import BaseSettings
 from pydantic import BaseModel
 
 
 class Settings(BaseSettings):
-    MONGO_INITDB_ROOT_USERNAME: str
-    MONGO_INITDB_ROOT_PASSWORD: str
-    MONGO_INITDB_DATABASE: str
+    POSTGRESQL_INITDB_ROOT_USERNAME: str
+    POSTGRESQL_INITDB_ROOT_PASSWORD: str
+    POSTGRESQL_INITDB_DATABASE: str
+    POSTGRES_PORT: int
 
-    DATABASE_URL: str
-    MONGO_INITDB_DATABASE: str
+    MAIL_USERNAME: str
+    MAIL_PASSWORD: str
+    MAIL_FROM: str
+    MAIL_PORT: int
+    MAIL_SERVER: str
+    MAIL_FROM_NAME: str
 
     AUTHJWT_SECRET_KEY: str
     REFRESH_TOKEN_EXPIRES_IN: int
@@ -17,16 +22,7 @@ class Settings(BaseSettings):
 
     CLIENT_ORIGIN: str
 
-    SENDGRID_API_KEY: str
-    EMAIL_HOST: str
-    EMAIL_PORT: int
-    EMAIL_FROM: EmailStr
-    MAIL_FROM_NAME: str
-    EMAILS_ERROR_SENDS_TO: str
-
     API_KEY: str
-    ENDPOINT_SCRAPING: str
-    CELERY_TEST_ENV: bool = True
 
     FRONT_PORT: int
     TESTING: bool
