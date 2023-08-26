@@ -4,11 +4,12 @@ from typing import Optional
 
 
 class UserBaseSchema(BaseModel):
-    name: str
+    username: str
     email: str
     is_admin: bool | None = None
     created_at: datetime | None = None
     updated_at: datetime | None = None
+    ruls: str | None = None
 
     class Config:
         orm_mode = True
@@ -18,21 +19,7 @@ class CreateUserSchema(UserBaseSchema):
     password: constr(min_length=8)
     passwordConfirm: str
     verified: bool = False
-
-
-class LoginUserSchema(BaseModel):
-    email: EmailStr
-    password: constr(min_length=8)
-
-
-class AssignRole(BaseModel):
-    is_admin: bool = False
-
-
-class SetNewPassword(BaseModel):
-    password: constr(min_length=8)
-    passwordConfirm: str
-
+    verification_code: Optional[str] = None
 
 class UserUpdateSchema(BaseModel):
     name: Optional[str]

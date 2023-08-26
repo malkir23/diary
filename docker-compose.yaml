@@ -2,6 +2,7 @@ version: '3'
 services:
 
   backend:
+    container_name: fastapi_d
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,29 +10,26 @@ services:
     stdin_open: true
     tty: true
     ports:
-      - 8000:8000
+      - 80:8000
     depends_on:
-      - mongo
+      - postgres
     links:
-      - mongo
+      - postgres
     volumes:
       - .:/code
 
-  mongo:
-    image: mongo:latest
-    container_name: mongo_fuzzy_db
-    env_file:
-      - backend/.env
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    restart: always
     volumes:
-      - mongo:/data/db
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: "diary_db"
+      POSTGRES_USER: "diary_admin"
+      POSTGRES_PASSWORD: "pgpwd4habr"
     ports:
-      - '6000:27017'
-
-  redis:
-    image: redis:latest
-    ports:
-      - '6379:6379'
+      - 5000:5432
 
 volumes:
-  mongo:
+  postgres:

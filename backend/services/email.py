@@ -5,7 +5,7 @@ from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 from jinja2 import Environment, select_autoescape, PackageLoader
 from fastapi import Request, status, HTTPException
 from datetime import datetime
-from backend.db.base import user_db
+from backend.quaries.users import Users
 from backend.services.url import create_url
 
 
@@ -22,16 +22,16 @@ class EmailService:
 
     def create_simple_config(self) -> ConnectionConfig:
         return ConnectionConfig(
-            MAIL_FROM=settings.EMAIL_FROM,
-            # MAIL_FROM_NAME=settings.MAIL_FROM_NAME,
-            MAIL_PORT=settings.EMAIL_PORT,
-            MAIL_SERVER=settings.EMAIL_HOST,
-            MAIL_USERNAME="apikey",
-            MAIL_PASSWORD=settings.SENDGRID_API_KEY,
-            MAIL_STARTTLS=False,
-            MAIL_SSL_TLS=False,
-            USE_CREDENTIALS=True,
-            VALIDATE_CERTS=True,
+            MAIL_USERNAME=settings.MAIL_USERNAME,
+            MAIL_PASSWORD=settings.MAIL_PASSWORD,
+            MAIL_FROM=settings.MAIL_FROM,
+            MAIL_PORT=settings.MAIL_PORT,
+            MAIL_SERVER=settings.MAIL_SERVER,
+            MAIL_FROM_NAME=settings.MAIL_FROM_NAME,
+            MAIL_STARTTLS = False,
+            MAIL_SSL_TLS = False,
+            USE_CREDENTIALS = True,
+            VALIDATE_CERTS = True
         )
 
     async def create_html_message(
@@ -79,7 +79,7 @@ class EmailService:
     async def verify_email(
         cls, request: Request, token: str, user: dict, verification_type: str
     ) -> None:
-        email = cls(user["name"], user["email"])
+        email = cls(user["username"], user["email"])
         template_name = "verification"
         try:
             match verification_type:
@@ -99,7 +99,7 @@ class EmailService:
             await email.sendMail(template_name, message)
 
         except Exception as error:
-            user_db.find_one_and_update(
+            Users.find_one(
                 {"_id": user["_id"]},
                 {"$set": {"verification_code": None, "updated_at": datetime.utcnow()}},
             )

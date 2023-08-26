@@ -1,13 +1,12 @@
 from passlib.context import CryptContext
 from fastapi import status, HTTPException, BackgroundTasks, Depends
 from pydantic import BaseModel
-from backend.services.logs import LogsService, TYPES_LOGS
 from functools import wraps
-from backend.db.base import user_db
-from bson.objectid import ObjectId
+from backend.quaries.users import user_db
 
 
-class userSerializers:
+
+class UserSerializers:
     @staticmethod
     def userEntity(user: dict) -> dict:
         return {
@@ -73,32 +72,3 @@ def get_action_role(function_name):
 
     return action
 
-
-def users_log(func):
-    @wraps(func)
-    async def wrapper(*args, **kwargs):
-        user_id = kwargs["user_id"]
-        writer = kwargs["auth_user"]
-        after_object = dict(kwargs["user"])
-        action = get_action_role(func.__name__)
-        fields = list(after_object.keys())
-        select_fields = { "_id": 0 }
-        select_fields.update({field: 1 for field in fields})
-        before_user_data = user_db.find_one(
-            {"_id": ObjectId(user_id)}, select_fields
-        )
-
-        result = await func(*args, **kwargs)
-
-        LogsService(
-            before_object=before_user_data,
-            after_object=after_object,
-            fields=fields,
-            type_=TYPES_LOGS.USERS,
-            action=action,
-            obj=after_object,
-            user_id=str(writer["id"]),
-        )
-        return result
-
-    return wrapper
