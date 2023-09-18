@@ -42,6 +42,9 @@ class Users:
     async def insert(request=None):
         return await DatabaseConnection.insert(UserBase, request)
 
+    @staticmethod
+    async def update(filters, update_fields):
+        return await DatabaseConnection.update(UserBase, filters, update_fields)
 
 
 user_db = Users()

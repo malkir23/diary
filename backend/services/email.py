@@ -93,7 +93,8 @@ class EmailService:
                         Thanks for creating an account with us.
                         Please verify your email address by clicking the button below.
                     """
-                    url = f"{create_url(request)}:{request.url.port}/api/auth/verify_email/{token}"
+                    url = f"{create_url(request)}/api/auth/verify_email/{token}"
+                    print(url)
 
             message = await email.create_html_message(subject, template_name, url, body_text)
             await email.sendMail(template_name, message)

@@ -1,47 +1,94 @@
-from datetime import datetime, date
-from fastapi import Request, status, HTTPException, APIRouter, Depends, Response
-from fastapi.responses import RedirectResponse
-
-from backend.quaries.users import Users
-from backend.models.users import CreateUserSchema
-from backend.services.user import PasswordService, UserSerializers
-from backend.services.email import EmailService
+from fastapi_jwt_auth import AuthJWT
+from fastapi import APIRouter, Depends, HTTPException, status, Request
+from backend.services.user import PasswordService, UserSerializers, UserService
+from backend.models.users import UserLoginSchema, CreateUserSchema
 from backend.services.oauth2 import create_token, set_auth_tokens, check_auth
-# from backend.services.url import create_url
-# from fastapi_jwt_auth import AuthJWT
-
-# from backend.services.utils import utc_now
-# from backend.settings.config import settings
+from backend.quaries.users import Users
+from fastapi.responses import RedirectResponse
+from datetime import datetime
+from backend.services.email import EmailService
 
 router = APIRouter()
 
-@router.post("/all_users")
-async def get_all_users() -> dict:
-    return {"result": await Users.find()}
 
-@router.post("/create_user")
-async def create_user(payload: CreateUserSchema, request: Request) -> dict:
-    # Check if user already exist
-    print( payload.email.lower() )
-    if await Users.find({"email": payload.email.lower()}):
+@router.post("/login")
+async def login(payload: UserLoginSchema, Authorize: AuthJWT = Depends()) -> dict:
+    # Check if the user exist
+    user = await UserService.get_user_by_filter({"email": payload.email.lower()})
+
+    # Check if user verified his email
+    if not user["verified"]:
         raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT, detail="Account already exist"
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Please verify your email address",
         )
 
+    # Check if the password is valid
+    if not PasswordService.verify_password(payload.password, user["password"]):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Incorrect Email or Password",
+        )
+
+    await set_auth_tokens(user["id"], Authorize)
+
+    # Send both access
+    return {"status": "success", "user": UserSerializers.embeddedUserResponse(user)}
+
+@router.post("/refresh")
+async def refresh(Aut: AuthJWT = Depends(), user: dict = Depends(check_auth)) -> dict:
+    Aut.jwt_refresh_token_required()
+    await set_auth_tokens(user["id"], Aut)
+    return {"status": "success"}
+
+@router.delete("/logout", status_code=status.HTTP_200_OK)
+async def logout( Aut: AuthJWT = Depends(), user: dict = Depends(check_auth)) -> dict:
+    Aut.unset_jwt_cookies()
+    return {"status": "success"}
+
+
+@router.get("/verify_email/{token}")
+async def verify_me(token: str, request: Request) -> RedirectResponse:
+    filters = {"verification_code": token}
+
+    update_fields = {
+        "verification_code": None,
+        "verified": True,
+        "updated_at": datetime.now(),
+    }
+    return {"status": await Users.update(filters, update_fields)}
+
+
+@router.post("/forgot_password")
+async def forgot_password(request: Request, email: str) -> dict:
+    verification_code = await create_token(email.lower())
+    user = await UserService.get_user_by_filter({"email": email.lower()})
+
+    update_fields =  {
+        "verification_code": verification_code,
+        "verified": False,
+        "updated_at": datetime.now(),
+    }
+    user = Users.update({"email": email}, update_fields)
+
+    await EmailService.verify_email(request, verification_code, user, "forgot")
+    return {"status": "success"}
+
+
+@router.post("/set_new_password/{token}", status_code=status.HTTP_202_ACCEPTED)
+async def set_new_password(payload: CreateUserSchema, token: str) -> dict:
+    # Compare password and password Confirm
     PasswordService.add_new_password(payload)
 
-    token = await create_token(str(payload.email.lower()))
-    user_data = payload.dict()
-    # user_data["created_at"] = date.today()
-    # user_data["updated_at"] = date.today()
-    user_data["verification_code"] = token
-    print(user_data)
-    await Users.insert(user_data)
-    # Compare password and password Confirm
-    await EmailService.verify_email(request, token, user_data, "register")
+    await UserService.get_user_by_filter({"verification_code": token})
 
-    return {
-        "status": "success",
-        "message": "Verification token successfully sent to your email"
+    update_fields = {
+        "verification_code": None,
+        "verified": True,
+        "updated_at": datetime.now(),
+        "password": payload.password,
     }
+    await Users.update( {"verification_code": token}, update_fields)
+
+    return {"status": "success"}
 

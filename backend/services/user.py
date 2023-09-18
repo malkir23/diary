@@ -2,41 +2,31 @@ from passlib.context import CryptContext
 from fastapi import status, HTTPException, BackgroundTasks, Depends
 from pydantic import BaseModel
 from functools import wraps
-from backend.quaries.users import user_db
+from backend.quaries.users import Users
 
 
 
 class UserSerializers:
     @staticmethod
-    def userEntity(user: dict) -> dict:
-        return {
-            "id": str(user["_id"]),
-            "name": user["name"],
-            "email": user["email"],
-            "is_admin": user["is_admin"],
-            "verified": user["verified"],
-            "created_at": user["created_at"],
-            "updated_at": user["updated_at"],
-        }
-
-    @staticmethod
-    def userResponseEntity(user: dict) -> dict:
-        return {
-            "id": str(user["_id"]),
-            "name": user["name"],
-            "email": user["email"],
-            "is_admin": user["is_admin"],
-            "created_at": user["created_at"],
-            "updated_at": user["updated_at"],
-        }
-
-    @staticmethod
     def embeddedUserResponse(user: dict) -> dict:
         return {
-            "id": str(user["_id"]),
-            "name": user["name"],
+            "id": user["id"],
+            "name": user["username"],
             "email": user["email"],
         }
+
+
+class UserService:
+    @staticmethod
+    async def get_user_by_filter(filter_fields: dict) -> bool:
+        user = await Users.find_one(filter_fields)
+        if not user:
+            error_list = [key.replace('_', ' ').capitalize() for key in filter_fields.keys()]
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Incorrect {' '.join(error_list)}",
+            )
+        return user
 
 
 class PasswordService:
