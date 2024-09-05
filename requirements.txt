@@ -32,3 +32,4 @@ starlette==0.22.0; python_full_version >= "3.8.1" and python_version < "4.0" and
 typing-extensions==4.7.1; python_version < "3.11" and python_version >= "3.8" and python_full_version >= "3.8.1"
 uvicorn==0.23.1; python_version >= "3.8"
 python-jose==3.3.0
+websockets==11.0.3

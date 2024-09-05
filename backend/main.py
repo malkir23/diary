@@ -2,9 +2,10 @@ from fastapi import FastAPI, Depends, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from .settings.config import CookieSettings
-from .endpoints import auth, users
+from .endpoints import video, auth, users
 from fastapi_jwt_auth import AuthJWT
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 
 @AuthJWT.load_config
@@ -28,9 +29,11 @@ backend.add_middleware(
     allow_headers=["*"],
 )
 
+backend.mount("/static", StaticFiles(directory="backend/static"), name="static")
 
 backend.include_router(auth.router, tags=["Auth"], prefix="/api/auth")
 backend.include_router(users.router, tags=["User"], prefix="/api/user")
+backend.include_router(video.router, tags=["Video"], prefix="/api/video")
 
 
 @backend.exception_handler(RequestValidationError)
