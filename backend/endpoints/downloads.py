@@ -184,28 +184,15 @@ echo "Запуск non-validator..."
 # Створюємо каталоги для даних
 mkdir -p ~/hl/data/replica_cmds ~/hl/data/periodic_abci_states ~/hl/data/node_trades ~/hl/data/node_order_statuses ~/hl/data/consensus
 
-# Налаштовуємо порти 4000-9000 для валідатора
-echo "Налаштовуємо відкриття портів для валідатора..."
-for port in {4000..9000}
+# Налаштовуємо відкриття лише необхідних портів 4000, 5000, 6000, 7000, 8000 і 9000
+echo "Відкриваємо порти 4000, 5000, 6000, 7000, 8000 і 9000..."
+for port in 4000 5000 6000 7000 8000 9000
 do
     sudo ufw allow $port
 done
 
-# Перевірка стану портів 8 і 9000
-echo "Перевіряємо порти 8 і 9000..."
-check_port_usage() {
-    PORT=$1
-    if sudo lsof -i -P -n | grep LISTEN | grep ":$PORT"; then
-        echo "Порт $PORT використовується."
-    else
-        echo "Порт $PORT не використовується."
-    fi
-}
-
-check_port_usage 8
-check_port_usage 9000
-
-# Перевіряємо стан портів у брандмауері
+# Перевіряємо стан портів 4000, 5000, 6000, 7000, 8000, 9000
+echo "Перевіряємо, чи порти відкриті у брандмауері..."
 check_port_firewall() {
     PORT=$1
     if sudo ufw status | grep "$PORT"; then
@@ -215,8 +202,10 @@ check_port_firewall() {
     fi
 }
 
-check_port_firewall 8
-check_port_firewall 9000
+for port in 4000 5000 6000 7000 8000 9000
+do
+    check_port_firewall $port
+done
 
 # Опціональний крок для включення EVM
 read -p "Чи бажаєте увімкнути EVM RPC? (y/n): " enable_evm
