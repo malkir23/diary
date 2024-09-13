@@ -205,13 +205,22 @@ async def download_hyperliquid_dex():
     script_content = """
 #!/bin/bash
 
-# Оновлення системи Ubuntu
-echo "Оновлюємо систему Ubuntu..."
+# Запитуємо дані у користувача
+read -p "Введіть ключ валідатора (якщо не введете, буде використаний ключ за замовчуванням): " validator_key
+validator_key=${validator_key:-8888888888888888888888888888888888888888888888888888888888888888}
+
+read -p "Введіть node-wallet-key: " node_wallet_key
+read -p "Введіть IP адресу: " node_ip
+read -p "Введіть ім'я ноди: " node_name
+read -p "Введіть опис ноди: " node_description
+
+# Оновлюємо систему
+echo "Оновлюємо систему..."
 sudo apt update && sudo apt upgrade -y
 
-# Перевірка наявності Docker
+# Встановлюємо Docker, якщо він не встановлений
 if ! [ -x "$(command -v docker)" ]; then
-    echo "Docker не встановлений. Встановлюємо Docker..."
+    echo "Встановлюємо Docker..."
     curl -fsSL https://get.docker.com -o get-docker.sh
     sh get-docker.sh
 else
@@ -219,39 +228,45 @@ else
 fi
 
 # Налаштування ланцюга на Testnet
-echo "Налаштовуємо ланцюг на Testnet..."
 echo '{"chain": "Testnet"}' > ~/visor.json
 
-# Завантаження та налаштування hl-visor
-echo "Завантажуємо та налаштовуємо hl-visor..."
+# Завантажуємо і встановлюємо hl-visor
+echo "Завантажуємо hl-visor..."
 curl https://binaries.hyperliquid.xyz/Testnet/hl-visor > ~/hl-visor
 chmod a+x ~/hl-visor
 
-# Клонування репозиторію Hyperliquid
-echo "Клонуємо репозиторій Hyperliquid..."
-git clone https://github.com/hyperliquid-dex/node
+# Генеруємо конфігурацію валідатора
+echo "Генеруємо конфігурацію валідатора..."
+mkdir -p ~/hl/hyperliquid_data
+echo "{\"key\": \"$validator_key\"}" > ~/hl/hyperliquid_data/node_config.json
 
-# Перехід до директорії node
-echo "Переходимо до директорії node..."
-cd node
+# Запуск non-validator
+echo "Запускаємо ноду в режимі non-validator..."
+~/hl-visor run-non-validator &
 
-# Редагування Dockerfile для запуску run-non-validator
-echo "Редагуємо Dockerfile..."
-sed -i 's|ENTRYPOINT .*|ENTRYPOINT ["/home/hluser/hl-visor", "run-non-validator"]|' Dockerfile
+# Створюємо файл для швидшого завантаження з відомого peer
+echo '{ "root_node_ips": [{"Ip": "1.2.3.4"}], "try_new_peers": false }' > ~/override_gossip_config.json
 
-# Побудова Docker image
-echo "Будуємо Docker image..."
-docker compose build
+# Друк адреси валідатора
+echo "Адреса вашого валідатора:"
+~/hl-node --chain Testnet print-address $node_wallet_key
 
-# Запуск Docker контейнера
-echo "Запускаємо Docker контейнер..."
-docker compose up -d
+# Реєструємо публічну IP адресу валідатора
+echo "Реєстрація публічної IP адреси валідатора..."
+~/hl-node --chain Testnet send-signed-action "{\"type\": \"CValidatorAction\", \"register\": {\"profile\": {\"node_ip\": {\"Ip\": \"$node_ip\"}, \"name\": \"$node_name\", \"description\": \"$node_description\"}}}" $node_wallet_key
 
-# Перевірка статусу запущених контейнерів
-echo "Перевіряємо статус запущених контейнерів..."
-docker ps
+# Відкриваємо порти для валідатора
+echo "Відкриваємо порти для валідатора..."
+sudo ufw allow 4000
+sudo ufw allow 5000
+sudo ufw allow 6000
+sudo ufw allow 7000
+sudo ufw allow 8000
+sudo ufw allow 9000
+sudo ufw enable
 
-echo "Скрипт завершено. Нода Hyperliquid запущена."
+# Завершення
+echo "Валідатор налаштований. Можете слідкувати за його роботою через логи або підключитися до ноди."
 	"""
     # Set content type for shell script
     return Response(content=script_content, media_type="text/x-sh", headers={
