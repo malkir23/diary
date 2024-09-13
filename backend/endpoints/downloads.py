@@ -114,6 +114,48 @@ echo "Скрипт завершено. Контейнер Elixir запущен�
         "Content-Disposition": "attachment; filename=elxnode-script.sh"
     })
 
+@router.get("/download_update_elxnode", response_class=Response)
+async def download_update_elxnode():
+    # Shell script content
+    script_content = """
+#!/bin/bash
+
+echo "Оновлюємо систему Ubuntu..."
+sudo apt update && sudo apt upgrade -y
+
+# Перевірка наявності Docker
+if ! [ -x "$(command -v docker)" ]; then
+    echo "Docker не встановлений. Встановлюємо Docker..."
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sh get-docker.sh
+else
+    echo "Docker вже встановлений."
+fi
+
+echo "Зупиняюмо Docker..."
+sudo docker stop elixir
+sudo docker kill elixir
+sudo docker rm elixir
+
+echo "Завантажуємо образ Docker для Elixir validator..."
+docker pull elixirprotocol/validator:v3 --platform linux/amd64
+
+echo "Запускаємо Docker..."
+docker run -d \
+--env-file /root/elxnode/validator.env \
+--name elixir \
+--restart unless-stopped \
+--platform linux/amd64 -p 17690:17690 \
+elixirprotocol/validator:v3
+
+
+echo "Скрипт завершено. Контейнер Elixir оновленно."
+	"""
+    # Set content type for shell script
+    return Response(content=script_content, media_type="text/x-sh", headers={
+        "Content-Disposition": "attachment; filename=download_update_elxnode.sh"
+    })
+
 
 @router.get("/download_update_ubuntu", response_class=Response)
 async def download_update_ubuntu():
