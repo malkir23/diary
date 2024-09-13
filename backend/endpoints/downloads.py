@@ -245,7 +245,7 @@ echo "Запускаємо ноду в режимі non-validator..."
 ~/hl-visor run-non-validator &
 
 # Створюємо файл для швидшого завантаження з відомого peer
-echo '{ "root_node_ips": [{"Ip": "1.2.3.4"}], "try_new_peers": false }' > ~/override_gossip_config.json
+echo '{ "root_node_ips": [{"Ip": \"$node_ip\" }], "try_new_peers": false }' > ~/override_gossip_config.json
 
 # Друк адреси валідатора
 echo "Адреса вашого валідатора:"
@@ -264,6 +264,14 @@ sudo ufw allow 7000
 sudo ufw allow 8000
 sudo ufw allow 9000
 sudo ufw enable
+
+# Створюємо Docker image
+echo "Створюємо Docker image..."
+sudo docker compose build
+
+# Запуск Docker контейнера
+echo "Запускаємо Docker контейнер..."
+sudo docker compose up -d
 
 # Завершення
 echo "Валідатор налаштований. Можете слідкувати за його роботою через логи або підключитися до ноди."
