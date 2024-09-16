@@ -1,50 +1,15 @@
 from fastapi import APIRouter, Response
+from starlette.responses import FileResponse
+from backend.settings.config import settings
 
 
 router = APIRouter()
 
 @router.get("/download_sh", response_class=Response)
 async def download_sh():
-    # Shell script content
-    script_content = """
-		#!/bin/bash
-
-		# Оновлюємо пакети
-		echo "Оновлення списку пакетів..."
-		sudo apt update
-
-		# Встановлюємо OpenSSH Server, якщо він не встановлений
-		if ! dpkg -l | grep -q openssh-server; then
-			echo "Встановлення OpenSSH Server..."
-			sudo apt install -y openssh-server
-		else
-			echo "OpenSSH Server вже встановлений."
-		fi
-
-		# Запускаємо та включаємо службу SSH
-		echo "Запуск та активація SSH служби..."
-		sudo systemctl enable ssh
-		sudo systemctl start ssh
-
-		# Перевіряємо статус SSH
-		echo "Статус SSH служби:"
-		sudo systemctl status ssh | grep "active (running)"
-
-		# Відкриваємо порт 22 у брандмауері UFW (якщо використовується UFW)
-		if sudo ufw status | grep -q "inactive"; then
-			echo "Брандмауер UFW не активний."
-		else
-			echo "Відкриття порту 22 у брандмауері..."
-			sudo ufw allow 22
-			sudo ufw reload
-		fi
-
-		echo "SSH готовий до використання. Можете підключатися."
-	"""
-    # Set content type for shell script
-    return Response(content=script_content, media_type="text/x-sh", headers={
-        "Content-Disposition": "attachment; filename=sample-script.sh"
-    })
+    file_name = 'download.sh'
+    file_path = f'/{settings.static_files_root}{file_name}'
+    return FileResponse(file_path, media_type='application/octet-stream',filename=file_name)
 
 
 @router.get("/download_elxnode", response_class=Response)
@@ -120,9 +85,6 @@ async def download_update_elxnode():
     script_content = """
 #!/bin/bash
 
-echo "Оновлюємо систему Ubuntu..."
-sudo apt update && sudo apt upgrade -y
-
 # Перевірка наявності Docker
 if ! [ -x "$(command -v docker)" ]; then
     echo "Docker не встановлений. Встановлюємо Docker..."
@@ -196,87 +158,4 @@ lsb_release -a
     # Set content type for shell script
     return Response(content=script_content, media_type="text/x-sh", headers={
         "Content-Disposition": "attachment; filename=update_ubuntu.sh"
-    })
-
-
-@router.get("/download_hyperliquid_dex", response_class=Response)
-async def download_hyperliquid_dex():
-    # Shell script content
-    script_content = """
-#!/bin/bash
-
-# Запитуємо дані у користувача
-read -p "Введіть ключ валідатора (якщо не введете, буде використаний ключ за замовчуванням): " validator_key
-validator_key=${validator_key:-8888888888888888888888888888888888888888888888888888888888888888}
-
-read -p "Введіть node-wallet-key: " node_wallet_key
-read -p "Введіть IP адресу: " node_ip
-read -p "Введіть ім'я ноди: " node_name
-read -p "Введіть опис ноди: " node_description
-
-# Оновлюємо систему
-echo "Оновлюємо систему..."
-sudo apt update && sudo apt upgrade -y
-
-# Встановлюємо Docker, якщо він не встановлений
-if ! [ -x "$(command -v docker)" ]; then
-    echo "Встановлюємо Docker..."
-    curl -fsSL https://get.docker.com -o get-docker.sh
-    sh get-docker.sh
-else
-    echo "Docker вже встановлений."
-fi
-
-# Налаштування ланцюга на Testnet
-echo '{"chain": "Testnet"}' > ~/visor.json
-
-# Завантажуємо і встановлюємо hl-visor
-echo "Завантажуємо hl-visor..."
-curl https://binaries.hyperliquid.xyz/Testnet/hl-visor > ~/hl-visor
-chmod a+x ~/hl-visor
-
-# Генеруємо конфігурацію валідатора
-echo "Генеруємо конфігурацію валідатора..."
-mkdir -p ~/hl/hyperliquid_data
-echo "{\"key\": \"$validator_key\"}" > ~/hl/hyperliquid_data/node_config.json
-
-# Запуск non-validator
-echo "Запускаємо ноду в режимі non-validator..."
-~/hl-visor run-non-validator &
-
-# Створюємо файл для швидшого завантаження з відомого peer
-echo '{ "root_node_ips": [{"Ip": \"$node_ip\" }], "try_new_peers": false }' > ~/override_gossip_config.json
-
-# Друк адреси валідатора
-echo "Адреса вашого валідатора:"
-~/hl-node --chain Testnet print-address $node_wallet_key
-
-# Реєструємо публічну IP адресу валідатора
-echo "Реєстрація публічної IP адреси валідатора..."
-~/hl-node --chain Testnet send-signed-action "{\"type\": \"CValidatorAction\", \"register\": {\"profile\": {\"node_ip\": {\"Ip\": \"$node_ip\"}, \"name\": \"$node_name\", \"description\": \"$node_description\"}}}" $node_wallet_key
-
-# Відкриваємо порти для валідатора
-echo "Відкриваємо порти для валідатора..."
-sudo ufw allow 4000
-sudo ufw allow 5000
-sudo ufw allow 6000
-sudo ufw allow 7000
-sudo ufw allow 8000
-sudo ufw allow 9000
-sudo ufw enable
-
-# Створюємо Docker image
-echo "Створюємо Docker image..."
-sudo docker compose build
-
-# Запуск Docker контейнера
-echo "Запускаємо Docker контейнер..."
-sudo docker compose up -d
-
-# Завершення
-echo "Валідатор налаштований. Можете слідкувати за його роботою через логи або підключитися до ноди."
-	"""
-    # Set content type for shell script
-    return Response(content=script_content, media_type="text/x-sh", headers={
-        "Content-Disposition": "attachment; filename=hyperliquid_dex.sh"
     })

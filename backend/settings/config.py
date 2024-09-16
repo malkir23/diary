@@ -24,6 +24,8 @@ class Settings(BaseSettings):
 
     API_KEY: str
 
+    STATIC_FILES_ROOT: str
+
     FRONT_PORT: int
     TESTING: bool
 
