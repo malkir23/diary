@@ -8,7 +8,7 @@ router = APIRouter()
 @router.get("/download_sh", response_class=Response)
 async def download_sh():
     file_name = 'download.sh'
-    file_path = f'/{settings.STATIC_FILES_ROOT}{file_name}'
+    file_path = f'{settings.STATIC_FILES_ROOT}{file_name}'
     return FileResponse(file_path, media_type='application/octet-stream',filename=file_name)
 
 
