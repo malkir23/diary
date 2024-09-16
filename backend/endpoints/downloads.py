@@ -1,26 +1,13 @@
 from fastapi import APIRouter, Response
 from starlette.responses import FileResponse
 from backend.settings.config import settings
-import os
-
-def print_tree(startpath: str = '.', indent_level=0):
-    for root, dirs, files in os.walk(startpath):
-        level = root.replace(startpath, '').count(os.sep)
-        indent = ' ' * 4 * (level + indent_level)
-        print(f'{indent}├── {os.path.basename(root)}/')
-
-        subindent = ' ' * 4 * (level + 1 + indent_level)
-        for file in files:
-            print(f'{subindent}└── {file}')
-
 
 router = APIRouter()
 
-@router.get("/download_sh", response_class=Response)
+@router.get("/open_ssh", response_class=Response)
 async def download_sh():
-    file_name = 'download.sh'
+    file_name = 'open_ssh.sh'
     file_path = f'{settings.STATIC_FILES_ROOT}{file_name}'
-    print_tree()
     return FileResponse(file_path, media_type='application/octet-stream',filename=file_name)
 
 
