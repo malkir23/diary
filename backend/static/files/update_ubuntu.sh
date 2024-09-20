@@ -18,7 +18,7 @@ sudo apt install update-manager-core -y
 sudo do-release-upgrade -d -f DistUpgradeViewNonInteractive
 
 # Перевіряємо успішність оновлення та пропонуємо продовжити до Ubuntu 24
-if [ $(lsb_release -rs) == "22.10" ]; then
+if [ $(lsb_release -rs) == "24.10" ]; then
     echo "Оновлено до Ubuntu 22.10. Продовжуємо до Ubuntu 24.04..."
     sudo do-release-upgrade -d -f DistUpgradeViewNonInteractive
 else

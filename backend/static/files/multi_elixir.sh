@@ -12,6 +12,9 @@ read -p "Введіть стартовий порт для першого кон
 # Запитуємо STRATEGY_EXECUTOR_DISPLAY_NAME
 read -p "Введіть STRATEGY_EXECUTOR_DISPLAY_NAME: " STRATEGY_EXECUTOR_DISPLAY_NAME
 
+# Запитуємо STRATEGY_EXECUTOR_IP_ADDRESS
+read -p "Введіть STRATEGY_EXECUTOR_IP_ADDRESS: " STRATEGY_EXECUTOR_IP_ADDRESS
+
 # Встановлюємо Docker (якщо ще не встановлено)
 if ! command -v docker &> /dev/null
 then
@@ -43,7 +46,6 @@ do
     echo "Створюємо файл $ENV_FILE"
 
     # Запитуємо інші значення у користувача
-    read -p "Введіть STRATEGY_EXECUTOR_IP_ADDRESS: " STRATEGY_EXECUTOR_IP_ADDRESS
     read -p "Введіть STRATEGY_EXECUTOR_BENEFICIARY: " STRATEGY_EXECUTOR_BENEFICIARY
     read -p "Введіть SIGNER_PRIVATE_KEY: " SIGNER_PRIVATE_KEY
 

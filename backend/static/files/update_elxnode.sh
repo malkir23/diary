@@ -11,7 +11,6 @@ fi
 
 echo "Зупиняюмо Docker..."
 sudo docker stop elixir
-sudo docker kill elixir
 sudo docker rm elixir
 
 echo "Завантажуємо образ Docker для Elixir validator..."
