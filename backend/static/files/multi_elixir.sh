@@ -62,7 +62,7 @@ do
     --env-file $ENV_FILE \
     --name elixir_$i \
     --restart unless-stopped \
-    elixirprotocol/validator:3
+    elixirprotocol/validator:v3
 done
 
 echo "Скрипт завершено. Усього запущено $CONTAINER_COUNT контейнерів Elixir."
