@@ -58,7 +58,7 @@ do
     # Запускаємо контейнер для кожної конфігурації на унікальному порту
     echo "Запускаємо Docker контейнер $i на порту $CONTAINER_PORT..."
     docker run -d \
-    -p $CONTAINER_PORT:17690 \
+    -p $CONTAINER_PORT:$START_PORT \
     --env-file $ENV_FILE \
     --name elixir_$i \
     --restart unless-stopped \
