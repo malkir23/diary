@@ -9,12 +9,6 @@ read -p "Введіть кількість Docker копій (контейнер
 # Запитуємо стартовий порт
 read -p "Введіть стартовий порт для першого контейнера: " START_PORT
 
-# Запитуємо інші значення у користувача
-read -p "Введіть STRATEGY_EXECUTOR_IP_ADDRESS: " STRATEGY_EXECUTOR_IP_ADDRESS
-read -p "Введіть STRATEGY_EXECUTOR_DISPLAY_NAME: " STRATEGY_EXECUTOR_DISPLAY_NAME
-read -p "Введіть STRATEGY_EXECUTOR_BENEFICIARY: " STRATEGY_EXECUTOR_BENEFICIARY
-read -p "Введіть SIGNER_PRIVATE_KEY: " SIGNER_PRIVATE_KEY
-
 # Встановлюємо Docker (якщо ще не встановлено)
 if ! command -v docker &> /dev/null
 then
@@ -45,6 +39,12 @@ do
     ENV_FILE="/root/elxnode/validator_$i.env"
     echo "Створюємо файл $ENV_FILE"
 
+    # Запитуємо інші значення у користувача
+    read -p "Введіть STRATEGY_EXECUTOR_IP_ADDRESS: " STRATEGY_EXECUTOR_IP_ADDRESS
+    read -p "Введіть STRATEGY_EXECUTOR_DISPLAY_NAME: " STRATEGY_EXECUTOR_DISPLAY_NAME
+    read -p "Введіть STRATEGY_EXECUTOR_BENEFICIARY: " STRATEGY_EXECUTOR_BENEFICIARY
+    read -p "Введіть SIGNER_PRIVATE_KEY: " SIGNER_PRIVATE_KEY
+
     # Записуємо ENV параметри в файл конфігурації
     echo "ENV=testnet-3" > $ENV_FILE
     echo "STRATEGY_EXECUTOR_IP_ADDRESS=$STRATEGY_EXECUTOR_IP_ADDRESS" >> $ENV_FILE
@@ -58,7 +58,7 @@ do
     # Запускаємо контейнер для кожної конфігурації на унікальному порту
     echo "Запускаємо Docker контейнер $i на порту $CONTAINER_PORT..."
     docker run -d \
-    -p $CONTAINER_PORT:4000 \
+    -p $CONTAINER_PORT:17690 \
     --env-file $ENV_FILE \
     --name elixir_$i \
     --restart unless-stopped \
