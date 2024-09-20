@@ -6,6 +6,12 @@ mkdir -p /root/elxnode
 # Запитуємо кількість Docker копій у користувача
 read -p "Введіть кількість Docker копій (контейнерів): " CONTAINER_COUNT
 
+# Запитуємо інші значення у користувача
+read -p "Введіть STRATEGY_EXECUTOR_IP_ADDRESS: " STRATEGY_EXECUTOR_IP_ADDRESS
+read -p "Введіть STRATEGY_EXECUTOR_DISPLAY_NAME: " STRATEGY_EXECUTOR_DISPLAY_NAME
+read -p "Введіть STRATEGY_EXECUTOR_BENEFICIARY: " STRATEGY_EXECUTOR_BENEFICIARY
+read -p "Введіть SIGNER_PRIVATE_KEY: " SIGNER_PRIVATE_KEY
+
 # Встановлюємо Docker (якщо ще не встановлено)
 if ! command -v docker &> /dev/null
 then
