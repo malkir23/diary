@@ -6,6 +6,9 @@ mkdir -p /root/elxnode
 # Запитуємо кількість Docker копій у користувача
 read -p "Введіть кількість Docker копій (контейнерів): " CONTAINER_COUNT
 
+# Запитуємо стартовий порт
+read -p "Введіть стартовий порт для першого контейнера: " START_PORT
+
 # Запитуємо інші значення у користувача
 read -p "Введіть STRATEGY_EXECUTOR_IP_ADDRESS: " STRATEGY_EXECUTOR_IP_ADDRESS
 read -p "Введіть STRATEGY_EXECUTOR_DISPLAY_NAME: " STRATEGY_EXECUTOR_DISPLAY_NAME
@@ -49,13 +52,17 @@ do
     echo "STRATEGY_EXECUTOR_BENEFICIARY=$STRATEGY_EXECUTOR_BENEFICIARY" >> $ENV_FILE
     echo "SIGNER_PRIVATE_KEY=$SIGNER_PRIVATE_KEY" >> $ENV_FILE
 
-    # Запускаємо контейнер для кожної конфігурації
-    echo "Запускаємо Docker контейнер $i..."
+    # Визначаємо порт для контейнера
+    CONTAINER_PORT=$((START_PORT + i - 1))
+
+    # Запускаємо контейнер для кожної конфігурації на унікальному порту
+    echo "Запускаємо Docker контейнер $i на порту $CONTAINER_PORT..."
     docker run -d \
+    -p $CONTAINER_PORT:4000 \
     --env-file $ENV_FILE \
     --name elixir_$i \
     --restart unless-stopped \
-    elixirprotocol/validator:3.4.0
+    elixirprotocol/validator:3
 done
 
 echo "Скрипт завершено. Усього запущено $CONTAINER_COUNT контейнерів Elixir."
