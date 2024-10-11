@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Запитуємо стартовий порт
+read -p "Введіть стартовий порт для першого контейнера: " START_PORT
+
 # Перевірка наявності Docker
 if ! [ -x "$(command -v docker)" ]; then
     echo "Docker не встановлений. Встановлюємо Docker..."
@@ -10,19 +13,27 @@ else
 fi
 
 echo "Зупиняюмо Docker..."
-sudo docker stop elixir
-sudo docker rm elixir
+# Зупиняємо та видаляємо всі контейнери, ім'я яких починається на elixir_
+containers=$(sudo docker ps -a --filter "name=^elixir_" --format "{{.ID}}")
+if [ -n "$containers" ]; then
+    sudo docker stop $containers
+    sudo docker rm $containers
+fi
 
 echo "Завантажуємо образ Docker для Elixir validator..."
 docker pull elixirprotocol/validator:v3 --platform linux/amd64
 
-echo "Запускаємо Docker..."
-docker run -d \
---env-file /root/elxnode/validator.env \
---name elixir \
---restart unless-stopped \
---platform linux/amd64 -p 17690:17690 \
-elixirprotocol/validator:v3
-
+echo "Запускаємо Docker для всіх зупинених контейнерів..."
+i=1
+for container in $containers; do
+    CONTAINER_PORT=$((START_PORT + i - 1))
+    docker run -d \
+    -p $CONTAINER_PORT:$START_PORT \
+    --env-file /root/elxnode/validator_$i.env \
+    --name elixir_$i \
+    --restart unless-stopped \
+    elixirprotocol/validator:v3
+    i=$((i + 1))
+done
 
 echo "Скрипт завершено. Контейнер Elixir оновленно."
