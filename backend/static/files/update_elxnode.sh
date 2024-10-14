@@ -13,12 +13,29 @@ else
 fi
 
 echo "Зупиняюмо Docker..."
+
 # Зупиняємо та видаляємо всі контейнери, ім'я яких починається на elixir_
 containers=$(sudo docker ps -a --filter "name=^elixir_" --format "{{.ID}}")
 if [ -n "$containers" ]; then
     sudo docker stop $containers
     sudo docker rm $containers
 fi
+
+# Зупиняємо всі контейнери старі
+old_containers=$(sudo docker ps -a --filter "name=elixir" --format "{{.ID}}")
+if [ -n "$old_containers" ]; then
+    sudo docker stop $old_containers
+    sudo docker rm $old_containers
+    containers="$containers $old_containers"
+fi
+
+#Видаляємо старі образи
+echo "Видаляємо старі образи..."
+old_images=$(sudo docker images --filter "reference=elixirprotocol/validator" --format "{{.ID}}")
+if [ -n "$old_images" ]; then
+    sudo docker rmi $old_images
+fi
+echo "Видаляємо старі образи завершено."
 
 echo "Завантажуємо образ Docker для Elixir validator..."
 docker pull elixirprotocol/validator:v3 --platform linux/amd64
