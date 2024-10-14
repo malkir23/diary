@@ -26,11 +26,11 @@ old_containers=$(sudo docker ps -a --filter "name=elixir" --format "{{.ID}}")
 if [ -n "$old_containers" ]; then
     sudo docker stop $old_containers
     sudo docker rm $old_containers
-    containers="$containers $old_containers"
+    containers=("${old_containers[@]}" "${containers[@]}")
     # Перейменовуємо файл validator.env на validator_1.env
-    if [ -f "/root/elxnode/validator.env" ]; then
+    if [ -f "~/elxnode/validator.env" ]; then
         echo "Перейменовуємо файл validator.env на validator_1.env..."
-        mv /root/elxnode/validator.env /root/elxnode/validator_1.env
+        mv ~/elxnode/validator.env ~/elxnode/validator_1.env
     fi
 fi
 
@@ -51,7 +51,7 @@ for container in $containers; do
     CONTAINER_PORT=$((START_PORT + i - 1))
     docker run -d \
     -p $CONTAINER_PORT:$START_PORT \
-    --env-file /root/elxnode/validator_$i.env \
+    --env-file ~/elxnode/validator_$i.env \
     --name elixir_$i \
     --restart unless-stopped \
     elixirprotocol/validator:v3
