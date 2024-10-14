@@ -28,10 +28,8 @@ if [ -n "$old_containers" ]; then
     sudo docker rm $old_containers
     containers=("${old_containers[@]}" "${containers[@]}")
     # Перейменовуємо файл validator.env на validator_1.env
-    if [ -f "~/elxnode/validator.env" ]; then
-        echo "Перейменовуємо файл validator.env на validator_1.env..."
-        mv ~/elxnode/validator.env ~/elxnode/validator_1.env
-    fi
+    echo "Перейменовуємо файл validator.env на validator_1.env..."
+    mv ~/elxnode/validator.env ~/elxnode/validator_1.env
 fi
 
 #Видаляємо старі образи
