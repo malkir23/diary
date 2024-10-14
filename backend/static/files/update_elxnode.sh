@@ -38,7 +38,7 @@ fi
 echo "Видаляємо старі образи..."
 old_images=$(sudo docker images --filter "reference=elixirprotocol/validator" --format "{{.ID}}")
 if [ -n "$old_images" ]; then
-    sudo docker rmi $old_images
+    sudo docker rmi $old_images -f
 fi
 echo "Видаляємо старі образи завершено."
 
