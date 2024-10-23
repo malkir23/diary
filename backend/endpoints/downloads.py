@@ -55,3 +55,12 @@ async def download_hyperliquid():
     return FileResponse(
         file_path, media_type="application/octet-stream", filename=file_name
     )
+
+
+@router.get("/morph", response_class=Response)
+async def download_morph():
+    file_name = "morph.sh"
+    file_path = f"{settings.STATIC_FILES_ROOT}{file_name}"
+    return FileResponse(
+        file_path, media_type="application/octet-stream", filename=file_name
+    )
