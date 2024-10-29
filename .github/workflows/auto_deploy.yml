@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy to Oracle Cloud
 
 # Controls when the action will run.
 on:
@@ -19,7 +19,7 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
+        username: ${{ secrets.USER_NAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
