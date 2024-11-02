@@ -54,7 +54,7 @@ for container in $containers; do
     # Перевіряємо та додаємо параметр ENV=prod до кожного файлу validator_*.env
     if ! grep -q '^ENV=prod' "$env_file"; then
         echo "Додаємо ENV=prod до $env_file"
-        echo "ENV=prod" >> "$env_file"
+        sed -i 's/^ENV=.*/ENV=prod/' "$env_file"
     fi
     docker run -d \
     -p $CONTAINER_PORT:$START_PORT \
