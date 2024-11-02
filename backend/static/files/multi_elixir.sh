@@ -35,8 +35,8 @@ else
     echo "Docker вже встановлений."
 fi
 
-# Завантажуємо образ Docker для Elixir validator (якщо ще не завантажено)
-docker pull elixirprotocol/validator:v3 --platform linux/amd64
+# Завантажуємо новий образ Docker для Elixir validator
+docker pull elixirprotocol/validator --platform linux/amd64
 
 # Створюємо конфігураційні файли і запускаємо контейнери для кожної копії
 for ((i=1; i<=CONTAINER_COUNT; i++))
@@ -50,7 +50,7 @@ do
     read -p "Введіть SIGNER_PRIVATE_KEY: " SIGNER_PRIVATE_KEY
 
     # Записуємо ENV параметри в файл конфігурації
-    echo "ENV=testnet-3" > $ENV_FILE
+    echo "ENV=prod" > $ENV_FILE  # Встановлюємо ENV=prod для правильної мережі
     echo "STRATEGY_EXECUTOR_IP_ADDRESS=$STRATEGY_EXECUTOR_IP_ADDRESS" >> $ENV_FILE
     echo "STRATEGY_EXECUTOR_DISPLAY_NAME=$STRATEGY_EXECUTOR_DISPLAY_NAME-$i" >> $ENV_FILE
     echo "STRATEGY_EXECUTOR_BENEFICIARY=$STRATEGY_EXECUTOR_BENEFICIARY" >> $ENV_FILE
@@ -64,9 +64,10 @@ do
     docker run -d \
     -p $CONTAINER_PORT:$START_PORT \
     --env-file $ENV_FILE \
+    --platform linux/amd64 \
     --name elixir_$i \
     --restart unless-stopped \
-    elixirprotocol/validator:v3
+    elixirprotocol/validator
 done
 
 echo "Скрипт завершено. Усього запущено $CONTAINER_COUNT контейнерів Elixir."
