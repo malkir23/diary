@@ -18,6 +18,21 @@ services:
     volumes:
       - .:/code
 
+  flask:
+    container_name: flask_service
+    build:
+      context: ./flask
+      dockerfile: Dockerfile
+    command: flask run --host=0.0.0.0 --port=5000
+    ports:
+      - 8080:5000
+    depends_on:
+      - backend  # Ensure Flask waits for FastAPI to be available
+    links:
+      - backend
+    environment:
+      FASTAPI_URL: http://backend:8000
+
   postgres:
     image: postgres:latest
     container_name: postgres_db

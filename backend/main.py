@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from .settings.config import CookieSettings
-from .endpoints import auth, users, downloads
+from .endpoints import auth, users, downloads, u4u
 from fastapi_jwt_auth import AuthJWT
 from fastapi.responses import JSONResponse
 
@@ -32,6 +32,7 @@ backend.add_middleware(
 # backend.include_router(auth.router, tags=["Auth"], prefix="/api/auth")
 # backend.include_router(users.router, tags=["User"], prefix="/api/user")
 backend.include_router(downloads.router, tags=["Downloads"], prefix="/api/downloads")
+backend.include_router(u4u.router, tags=["Downloads"], prefix="/api/downloads")
 
 @backend.exception_handler(RequestValidationError)
 async def value_error_exception_handler(request: Request, exc: ValueError):
