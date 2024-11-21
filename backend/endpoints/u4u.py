@@ -9,6 +9,7 @@ TEMPLATES = Environment(
     autoescape=select_autoescape(["html", "xml"]),
 )
 
+
 router = APIRouter()
 
 @router.get("/api/data")

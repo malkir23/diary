@@ -5,6 +5,7 @@ from .settings.config import CookieSettings
 from .endpoints import auth, users, downloads, u4u
 from fastapi_jwt_auth import AuthJWT
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 
 @AuthJWT.load_config
@@ -27,6 +28,8 @@ backend.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+backend.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 # backend.include_router(auth.router, tags=["Auth"], prefix="/api/auth")
