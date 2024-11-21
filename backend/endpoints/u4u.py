@@ -1,6 +1,6 @@
 from fastapi import Request, APIRouter
 from fastapi.responses import HTMLResponse
-from jinja2 import Jinja2Templates
+from fastapi.templating import Jinja2Templates
 
 
 # Configure Jinja2 environment
