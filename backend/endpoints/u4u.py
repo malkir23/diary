@@ -1,19 +1,19 @@
-from fastapi import APIRouter
+from fastapi import Request, APIRouter
 from fastapi.responses import HTMLResponse
-from jinja2 import Environment, select_autoescape, PackageLoader
+from jinja2 import Jinja2Templates
 
 
 # Configure Jinja2 environment
-TEMPLATES = Environment(
-    loader=PackageLoader("backend", "templates"),
-    autoescape=select_autoescape(["html", "xml"]),
-)
-
+TEMPLATES = templates = Jinja2Templates(directory="templates")
 
 router = APIRouter()
 
-@router.get("/api/data")
-async def get_data():
-    template = TEMPLATES.get_template("index.html")
-    rendered_html = template.render(user="Alice")  # Pass dynamic data to the template
-    return HTMLResponse(content=rendered_html)
+@router.get("/api/data", response_class=HTMLResponse)
+async def get_data(request: Request):
+    # You can add task data here for dynamic rendering
+    task_data = {
+        "todo": ["Task 1", "Task 2"],
+        "in_progress": ["Task 3"],
+        "done": ["Task 4"]
+    }
+    return TEMPLATES.TemplateResponse("index.html", {"request": request, "tasks": task_data})
