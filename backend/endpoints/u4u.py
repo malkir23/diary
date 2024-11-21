@@ -4,12 +4,12 @@ from fastapi.templating import Jinja2Templates
 
 
 # Configure Jinja2 environment
-TEMPLATES = templates = Jinja2Templates(directory="templates")
+TEMPLATES = Jinja2Templates(directory="templates")
 
 router = APIRouter()
 
 @router.get("/api/data", response_class=HTMLResponse)
-async def get_data(request: Request):
+async def get_u4u_data(request: Request):
     # You can add task data here for dynamic rendering
     task_data = {
         "todo": ["Task 1", "Task 2"],
