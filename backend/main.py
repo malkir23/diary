@@ -29,7 +29,7 @@ backend.add_middleware(
     allow_headers=["*"],
 )
 
-backend.mount("/backend/static", StaticFiles(directory="static"), name="static")
+backend.mount("/backend/static", StaticFiles(directory="/backend/static"), name="static")
 
 
 # backend.include_router(auth.router, tags=["Auth"], prefix="/api/auth")
