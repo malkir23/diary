@@ -29,13 +29,13 @@ backend.add_middleware(
     allow_headers=["*"],
 )
 
-backend.mount("/backend/static", StaticFiles(directory="backend/static"), name="static")
+backend.mount("/static", StaticFiles(directory="backend/static"), name="static")
 
 
 # backend.include_router(auth.router, tags=["Auth"], prefix="/api/auth")
 # backend.include_router(users.router, tags=["User"], prefix="/api/user")
 backend.include_router(downloads.router, tags=["Downloads"], prefix="/api/downloads")
-backend.include_router(u4u.router, tags=["Downloads"], prefix="/api/downloads")
+backend.include_router(u4u.router, tags=["Downloads"], prefix="/api/u4u")
 
 @backend.exception_handler(RequestValidationError)
 async def value_error_exception_handler(request: Request, exc: ValueError):
