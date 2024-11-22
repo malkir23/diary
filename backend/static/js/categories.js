@@ -54,6 +54,8 @@ function enableEdit(categoryId) {
 	colorCell.firstChild.disabled = false;
 
 	// Show save and cancel buttons, hide edit button
+	console.log(row);
+
 	row.querySelector(".edit-button").style.display = "none";
 	row.querySelector(".save-button").style.display = "inline-block";
 	row.querySelector(".cancel-button").style.display = "inline-block";
