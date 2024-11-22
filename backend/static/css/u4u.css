@@ -18,7 +18,7 @@ h1 {
 
 .table {
 	width: 90%;
-	max-width: 400px;
+	max-width: 1200px;
 	padding: 15px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
@@ -27,6 +27,7 @@ h1 {
 
 h2 {
 	text-align: center;
+	margin-bottom: 10px;
 }
 
 /* Warm colors for each table */
@@ -45,7 +46,6 @@ h2 {
 .columns {
 	display: flex;
 	gap: 10px;
-	flex-wrap: wrap;
 }
 
 .column {
@@ -92,6 +92,13 @@ h3 {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+	/* Stack tables vertically */
+	.table-container {
+			flex-direction: column;
+			gap: 20px;
+	}
+
+	/* Stack columns vertically */
 	.columns {
 			flex-direction: column;
 			gap: 15px;
