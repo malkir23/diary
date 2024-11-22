@@ -93,7 +93,7 @@ async function saveEdit(categoryId) {
 
 			// Update the row with new values and reset buttons
 			row.querySelector(".category-name").textContent = updatedName;
-			row.querySelector(".category-color").textContent = updatedColor;
+			row.querySelector(".category-color").textContent = `<td class="category-color"><input type="color" value="${updatedColor}" disabled></td>`;
 
 			resetRow(row);
 	} catch (error) {
@@ -110,7 +110,7 @@ function cancelEdit(categoryId) {
 
 	// Restore original values
 	nameCell.textContent = nameCell.dataset.originalValue;
-	colorCell.firstChild.value = colorCell.dataset.originalValue;
+	colorCell.firstChild.value = colorCell.firstChild.attributes['value'].textContent;
 
 	resetRow(row);
 }
