@@ -147,9 +147,9 @@ async function deleteCategory(categoryId) {
 
 // Reset row buttons after editing
 function resetRow(row) {
-	row.querySelector(".edit-button").style.display = "inline-block";
-	row.querySelector(".save-button").style.display = "none";
-	row.querySelector(".cancel-button").style.display = "none";
+	row.children[2].children[0].style.display = "inline-block";
+	row.children[2].children[1].style.display = "none";
+	row.children[2].children[2].style.display = "none";
 }
 
 // Create a new category
