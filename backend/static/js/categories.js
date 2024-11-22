@@ -51,7 +51,7 @@ function enableEdit(categoryId) {
 
 	// Make cells editable
 	nameCell.innerHTML = `<input type="text" value="${nameCell.textContent.trim()}" class="edit-input" />`;
-	colorCell.innerHTML = `<input type="color" value="${colorCell.textContent.trim()}" class="edit-input" />`;
+	colorCell.firstChild.disabled = false;
 
 	// Show save and cancel buttons, hide edit button
 	row.querySelector(".edit-button").style.display = "none";
