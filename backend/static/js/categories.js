@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 							alert("Category added successfully!");
 							location.reload(); // Refresh to display the new category
 					} catch (error) {
-							console.error("Error adding category:", error);
+							// console.error("Error adding category:", error);
 							alert("An error occurred while adding the category.");
 					}
 			});
@@ -201,7 +201,7 @@ function addCategoryToTable(category) {
 	row.id = `category-row-${category.id}`;
 	row.innerHTML = `
 			<td class="category-name">${category.name}</td>
-			<td class="category-color">${category.color}</td>
+			<td class="category-color"><input type="color" value="${category.color}" disabled></td>
 			<td>
 					<button onclick="editCategory(${category.id})">Edit</button>
 					<button onclick="deleteCategory(${category.id})">Delete</button>
