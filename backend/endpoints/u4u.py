@@ -54,6 +54,7 @@ async def create_category(category: dict):
 @router.get("/categories/list", response_class=HTMLResponse)
 async def list_categories(request: Request):
     categories = await CATEGORYS.find()
+    categories.sort(key=lambda x: x["id"])
     return TEMPLATES.get_template("categories.html").render(request=request, categories=categories)
 
 @router.put("/categories/{category_id}")
