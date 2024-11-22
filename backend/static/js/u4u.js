@@ -12,15 +12,18 @@ document.addEventListener("DOMContentLoaded", () => {
 			list.addEventListener("drop", handleDrop);
 	});
 
+	let draggedTask = null;
+
 	function handleDragStart(e) {
-			e.dataTransfer.setData("text/plain", e.target.id);
+			draggedTask = e.target;
 			setTimeout(() => {
-					e.target.classList.add("hidden");
+					draggedTask.classList.add("hidden");
 			}, 0);
 	}
 
-	function handleDragEnd(e) {
-			e.target.classList.remove("hidden");
+	function handleDragEnd() {
+			draggedTask.classList.remove("hidden");
+			draggedTask = null;
 	}
 
 	function handleDragOver(e) {
@@ -29,8 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	function handleDrop(e) {
 			e.preventDefault();
-			const taskId = e.dataTransfer.getData("text/plain");
-			const task = document.getElementById(taskId);
-			e.target.appendChild(task);
+			const targetList = e.target.closest(".task-list");
+			if (targetList && targetList !== draggedTask.parentElement) {
+					targetList.appendChild(draggedTask);
+			}
 	}
 });
