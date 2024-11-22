@@ -1,4 +1,43 @@
 const categoriesUrl = "/api/u4u/categories";
+document.addEventListener("DOMContentLoaded", () => {
+	const addCategoryForm = document.getElementById("add-category-form");
+	if (addCategoryForm) {
+			addCategoryForm.addEventListener("submit", async (event) => {
+					event.preventDefault();
+
+					const formData = new FormData(addCategoryForm);
+					const name = formData.get("name");
+					const color = formData.get("color");
+
+					if (!name || !color) {
+							alert("Please provide both a name and a color.");
+							return;
+					}
+
+					try {
+							const response = await fetch(categoriesUrl, {
+									method: "POST",
+									headers: {
+											"Content-Type": "application/json",
+									},
+									body: JSON.stringify({ name, color }),
+							});
+
+							if (!response.ok) {
+									const error = await response.json();
+									alert(`Error: ${error.detail}`);
+									return;
+							}
+
+							alert("Category added successfully!");
+							location.reload(); // Refresh to display the new category
+					} catch (error) {
+							console.error("Error adding category:", error);
+							alert("An error occurred while adding the category.");
+					}
+			});
+	}
+});
 
 // Enable editing for a category row
 function enableEdit(categoryId) {
