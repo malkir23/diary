@@ -12,8 +12,8 @@ TEMPLATES = Environment(
 
 router = APIRouter()
 
-@router.get("/api/data", response_class=HTMLResponse)
-async def get_data(request: Request):
+@router.get("/table", response_class=HTMLResponse)
+async def get_table(request: Request):
     # You can add task data here for dynamic rendering
     task_data = {
         "todo": ["Task 1", "Task 2"],
