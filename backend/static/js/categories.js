@@ -1,60 +1,98 @@
+document.addEventListener("DOMContentLoaded", () => {
+	// Add an event listener to handle form submission for adding a category
+	// Function to delete a category
+	const categoriesURL = '/api/u4u/categories'
+	const addCategoryForm = document.getElementById("add-category-form");
+	if (addCategoryForm) {
+			addCategoryForm.addEventListener("submit", async (event) => {
+					event.preventDefault();
 
-const apiBase = "/api/u4u/categories";
-async function fetchCategories() {
-	const response = await fetch(`${apiBase}/list`);
-	const data = await response.json();
-	categoriesList.innerHTML = "";
-	editCategoryId.innerHTML = "";
+					const formData = new FormData(addCategoryForm);
+					const name = formData.get("name");
+					const color = formData.get("color");
 
-	data.forEach(category => {
-			const li = document.createElement("li");
-			li.innerHTML = `<span>${category.name}</span> <span style="color:${category.color}">●</span>`;
+					if (!name || !color) {
+							alert("Please provide both a name and a color.");
+							return;
+					}
 
-			const deleteButton = document.createElement("button");
-			deleteButton.textContent = "Delete";
-			deleteButton.addEventListener("click", async () => {
-					if (confirm(`Are you sure you want to delete "${category.name}"?`)) {
-							await fetch(`${apiBase}/${category.id}`, { method: "DELETE" });
-							alert("Category deleted!");
-							fetchCategories();
+					try {
+							const response = await fetch(categoriesURL, {
+									method: "POST",
+									headers: {
+											"Content-Type": "application/json",
+									},
+									body: JSON.stringify({ name, color }),
+							});
+
+							if (!response.ok) {
+									const error = await response.json();
+									alert(`Error: ${error.detail}`);
+									return;
+							}
+
+							alert("Category added successfully!");
+							location.reload(); // Refresh to display the new category
+					} catch (error) {
+							console.error("Error adding category:", error);
+							alert("An error occurred while adding the category.");
 					}
 			});
+	}
+});
 
-			li.appendChild(deleteButton);
-			categoriesList.appendChild(li);
+// Function to delete a category
+async function deleteCategory(categoryId) {
+	if (!confirm("Are you sure you want to delete this category?")) return;
 
-			const option = document.createElement("option");
-			option.value = category.id;
-			option.textContent = category.name;
-			editCategoryId.appendChild(option);
-	});
+	try {
+			const response = await fetch(`${categoriesURL}/${categoryId}`, {
+					method: "DELETE",
+			});
+
+			if (!response.ok) {
+					const error = await response.json();
+					alert(`Error: ${error.detail}`);
+					return;
+			}
+
+			alert("Category deleted successfully");
+			location.reload(); // Refresh the page to update the table
+	} catch (error) {
+			console.error("Error deleting category:", error);
+			alert("An error occurred while deleting the category.");
+	}
 }
 
-document.getElementById("create-category-form").addEventListener("submit", async (e) => {
-	e.preventDefault();
-	const name = document.getElementById("new-category-name").value;
-	const color = document.getElementById("new-category-color").value;
-	await fetch(apiBase, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ name, color })
-	});
-	alert("Category created!");
-	fetchCategories();
-});
+// Function to edit a category
+async function editCategory(categoryId) {
+	const newName = prompt("Enter the new name for the category:");
+	const newColor = prompt("Enter the new color for the category (e.g., #ff0000):");
 
-document.getElementById("edit-category-form").addEventListener("submit", async (e) => {
-	e.preventDefault();
-	const id = editCategoryId.value;
-	const name = document.getElementById("edit-category-name").value;
-	const color = document.getElementById("edit-category-color").value;
-	await fetch(`${apiBase}/${id}`, {
-			method: "PUT",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ name, color })
-	});
-	alert("Category updated!");
-	fetchCategories();
-});
+	if (!newName || !newColor) {
+			alert("Both name and color are required to update the category.");
+			return;
+	}
 
-fetchCategories();
+	try {
+			const response = await fetch(`${categoriesURL}/${categoryId}`, {
+					method: "PUT",
+					headers: {
+							"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ name: newName, color: newColor }),
+			});
+
+			if (!response.ok) {
+					const error = await response.json();
+					alert(`Error: ${error.detail}`);
+					return;
+			}
+
+			alert("Category updated successfully");
+			location.reload(); // Refresh the page to update the table
+	} catch (error) {
+			console.error("Error updating category:", error);
+			alert("An error occurred while updating the category.");
+	}
+}
