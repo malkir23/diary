@@ -121,7 +121,7 @@ async function deleteCategory(categoryId) {
 	}
 
 	try {
-			const response = await fetch(`${categoriesUrl}/categories/${categoryId}`, {
+			const response = await fetch(`${categoriesUrl}/${categoryId}`, {
 					method: "DELETE",
 			});
 

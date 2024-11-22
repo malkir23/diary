@@ -17,7 +17,7 @@
 				<input type="text" id="category-name" name="name" required>
 
 				<label for="category-color">Color:</label>
-				<input type="text" id="category-color" name="color" placeholder="e.g., #FF5733" required>
+				<input type="color" id="category-color" name="color" required>
 
 				<button type="submit">Create</button>
 		</form>
@@ -36,7 +36,7 @@
 					{% for category in categories %}
 					<tr id="category-row-{{ category.id }}">
 							<td class="category-name">{{ category.name }}</td>
-							<td class="category-color">{{ category.color }}</td>
+							<td class="category-color"><input type="color" value="{{ category.color }}" disabled></td>
 							<td>
 									<button class="edit-button" onclick="enableEdit({{ category.id }})">Edit</button>
 									<button class="save-button" onclick="saveEdit({{ category.id }})" style="display: none;">Save</button>
