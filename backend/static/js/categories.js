@@ -111,6 +111,7 @@ function cancelEdit(categoryId) {
 	// Restore original values
 	nameCell.textContent = nameCell.dataset.originalValue;
 	colorCell.firstChild.value = colorCell.firstChild.attributes['value'].textContent;
+	colorCell.firstChild.disabled = true;
 
 	resetRow(row);
 }
