@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-	const apiBase = "/categories";
+	const apiBase = "/api/u4u/categories";
 	const categoriesList = document.getElementById("categories-list");
 	const editCategoryId = document.getElementById("edit-category-id");
 
