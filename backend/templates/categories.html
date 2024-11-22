@@ -18,31 +18,29 @@
     </form>
 
     <!-- Table to display existing categories -->
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Color</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for category in categories %}
-            <tr>
-                <td>{{ category.id }}</td>
-                <td>{{ category.name }}</td>
-                <td>
-                    <span style="display:inline-block; width:20px; height:20px; background-color:{{ category.color }};"></span>
-                    {{ category.color }}
-                </td>
-                <td>
-                    <button onclick="editCategory({{ category.id }})">Edit</button>
-                    <button onclick="deleteCategory({{ category.id }})">Delete</button>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+		<table>
+			<thead>
+					<tr>
+							<th>Name</th>
+							<th>Color</th>
+							<th>Actions</th>
+					</tr>
+			</thead>
+			<tbody>
+					{% for category in categories %}
+					<tr id="category-row-{{ category.id }}">
+							<td class="category-name">{{ category.name }}</td>
+							<td class="category-color">{{ category.color }}</td>
+							<td>
+									<button class="edit-button" onclick="enableEdit({{ category.id }})">Edit</button>
+									<button class="save-button" onclick="saveEdit({{ category.id }})" style="display: none;">Save</button>
+									<button class="cancel-button" onclick="cancelEdit({{ category.id }})" style="display: none;">Cancel</button>
+									<button class="delete-button" onclick="deleteCategory({{ category.id }})">Delete</button>
+							</td>
+					</tr>
+					{% endfor %}
+			</tbody>
+	</table>
+
 </body>
 </html>

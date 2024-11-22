@@ -1,7 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-	// Add an event listener to handle form submission for adding a category
-	// Function to delete a category
-	const categoriesURL = '/api/u4u/categories'
 	const addCategoryForm = document.getElementById("add-category-form");
 	if (addCategoryForm) {
 			addCategoryForm.addEventListener("submit", async (event) => {
@@ -17,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					}
 
 					try {
-							const response = await fetch(categoriesURL, {
+							const response = await fetch("/categories", {
 									method: "POST",
 									headers: {
 											"Content-Type": "application/json",
@@ -41,46 +38,47 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 });
 
-// Function to delete a category
-async function deleteCategory(categoryId) {
-	if (!confirm("Are you sure you want to delete this category?")) return;
+// Enable editing for a category row
+function enableEdit(categoryId) {
+	const row = document.querySelector(`#category-row-${categoryId}`);
+	const nameCell = row.querySelector(".category-name");
+	const colorCell = row.querySelector(".category-color");
 
-	try {
-			const response = await fetch(`${categoriesURL}/${categoryId}`, {
-					method: "DELETE",
-			});
+	// Store the current values in data attributes in case of cancel
+	nameCell.dataset.originalValue = nameCell.textContent.trim();
+	colorCell.dataset.originalValue = colorCell.textContent.trim();
 
-			if (!response.ok) {
-					const error = await response.json();
-					alert(`Error: ${error.detail}`);
-					return;
-			}
+	// Make cells editable
+	nameCell.innerHTML = `<input type="text" value="${nameCell.textContent.trim()}" class="edit-input" />`;
+	colorCell.innerHTML = `<input type="color" value="${colorCell.textContent.trim()}" class="edit-input" />`;
 
-			alert("Category deleted successfully");
-			location.reload(); // Refresh the page to update the table
-	} catch (error) {
-			console.error("Error deleting category:", error);
-			alert("An error occurred while deleting the category.");
-	}
+	// Show save and cancel buttons, hide edit button
+	row.querySelector(".edit-button").style.display = "none";
+	row.querySelector(".save-button").style.display = "inline-block";
+	row.querySelector(".cancel-button").style.display = "inline-block";
 }
 
-// Function to edit a category
-async function editCategory(categoryId) {
-	const newName = prompt("Enter the new name for the category:");
-	const newColor = prompt("Enter the new color for the category (e.g., #ff0000):");
+// Save the updated category
+async function saveEdit(categoryId) {
+	const row = document.querySelector(`#category-row-${categoryId}`);
+	const nameInput = row.querySelector(".category-name input");
+	const colorInput = row.querySelector(".category-color input");
 
-	if (!newName || !newColor) {
-			alert("Both name and color are required to update the category.");
+	const updatedName = nameInput.value.trim();
+	const updatedColor = colorInput.value.trim();
+
+	if (!updatedName || !updatedColor) {
+			alert("Both name and color are required.");
 			return;
 	}
 
 	try {
-			const response = await fetch(`${categoriesURL}/${categoryId}`, {
+			const response = await fetch(`/categories/${categoryId}`, {
 					method: "PUT",
 					headers: {
 							"Content-Type": "application/json",
 					},
-					body: JSON.stringify({ name: newName, color: newColor }),
+					body: JSON.stringify({ name: updatedName, color: updatedColor }),
 			});
 
 			if (!response.ok) {
@@ -89,10 +87,35 @@ async function editCategory(categoryId) {
 					return;
 			}
 
-			alert("Category updated successfully");
-			location.reload(); // Refresh the page to update the table
+			alert("Category updated successfully!");
+
+			// Update the row with new values and reset buttons
+			row.querySelector(".category-name").textContent = updatedName;
+			row.querySelector(".category-color").textContent = updatedColor;
+
+			resetRow(row);
 	} catch (error) {
 			console.error("Error updating category:", error);
 			alert("An error occurred while updating the category.");
 	}
+}
+
+// Cancel editing and restore original values
+function cancelEdit(categoryId) {
+	const row = document.querySelector(`#category-row-${categoryId}`);
+	const nameCell = row.querySelector(".category-name");
+	const colorCell = row.querySelector(".category-color");
+
+	// Restore original values
+	nameCell.textContent = nameCell.dataset.originalValue;
+	colorCell.textContent = colorCell.dataset.originalValue;
+
+	resetRow(row);
+}
+
+// Reset row buttons after editing
+function resetRow(row) {
+	row.querySelector(".edit-button").style.display = "inline-block";
+	row.querySelector(".save-button").style.display = "none";
+	row.querySelector(".cancel-button").style.display = "none";
 }
