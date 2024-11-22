@@ -10,53 +10,71 @@
     <h1>Етапи польоту</h1>
     <div class="table-container">
         <!-- Table 1 -->
-        <div class="table" id="pre-flight">
+        <div class="table warm-orange" id="pre-flight">
             <h2>Перед Вилітом</h2>
             <div class="columns">
-                <ul class="task-list" id="pre-flight-todo">
-                    {% for task in tasks.pre_flight.todo %}
-                    <li draggable="true" class="task">{{ task }}</li>
-                    {% endfor %}
-                </ul>
-                <ul class="task-list" id="pre-flight-done">
-                    {% for task in tasks.pre_flight.done %}
-                    <li draggable="true" class="task">{{ task }}</li>
-                    {% endfor %}
-                </ul>
+                <div class="column">
+                    <h3>Зробити</h3>
+                    <ul class="task-list" id="pre-flight-todo">
+                        {% for task in tasks.pre_flight.todo %}
+                        <li draggable="true" class="task">{{ task }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>Зроблено</h3>
+                    <ul class="task-list" id="pre-flight-done">
+                        {% for task in tasks.pre_flight.done %}
+                        <li draggable="true" class="task">{{ task }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
 
         <!-- Table 2 -->
-        <div class="table" id="in-flight">
+        <div class="table warm-yellow" id="in-flight">
             <h2>Політ</h2>
             <div class="columns">
-                <ul class="task-list" id="in-flight-todo">
-                    {% for task in tasks.in_flight.todo %}
-                    <li draggable="true" class="task">{{ task }}</li>
-                    {% endfor %}
-                </ul>
-                <ul class="task-list" id="in-flight-done">
-                    {% for task in tasks.in_flight.done %}
-                    <li draggable="true" class="task">{{ task }}</li>
-                    {% endfor %}
-                </ul>
+                <div class="column">
+                    <h3>Зробити</h3>
+                    <ul class="task-list" id="in-flight-todo">
+                        {% for task in tasks.in_flight.todo %}
+                        <li draggable="true" class="task">{{ task }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>Зроблено</h3>
+                    <ul class="task-list" id="in-flight-done">
+                        {% for task in tasks.in_flight.done %}
+                        <li draggable="true" class="task">{{ task }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
 
         <!-- Table 3 -->
-        <div class="table" id="post-flight">
+        <div class="table warm-red" id="post-flight">
             <h2>Після Приліту</h2>
             <div class="columns">
-                <ul class="task-list" id="post-flight-todo">
-                    {% for task in tasks.post_flight.todo %}
-                    <li draggable="true" class="task">{{ task }}</li>
-                    {% endfor %}
-                </ul>
-                <ul class="task-list" id="post-flight-done">
-                    {% for task in tasks.post_flight.done %}
-                    <li draggable="true" class="task">{{ task }}</li>
-                    {% endfor %}
-                </ul>
+                <div class="column">
+                    <h3>Зробити</h3>
+                    <ul class="task-list" id="post-flight-todo">
+                        {% for task in tasks.post_flight.todo %}
+                        <li draggable="true" class="task">{{ task }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>Зроблено</h3>
+                    <ul class="task-list" id="post-flight-done">
+                        {% for task in tasks.post_flight.done %}
+                        <li draggable="true" class="task">{{ task }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
