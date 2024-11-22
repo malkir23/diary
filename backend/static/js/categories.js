@@ -1,3 +1,4 @@
+const categoriesUrl = "/api/u4u/categories";
 document.addEventListener("DOMContentLoaded", () => {
 	const addCategoryForm = document.getElementById("add-category-form");
 	if (addCategoryForm) {
@@ -14,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					}
 
 					try {
-							const response = await fetch("/categories", {
+							const response = await fetch(categoriesUrl, {
 									method: "POST",
 									headers: {
 											"Content-Type": "application/json",
@@ -73,7 +74,7 @@ async function saveEdit(categoryId) {
 	}
 
 	try {
-			const response = await fetch(`/categories/${categoryId}`, {
+			const response = await fetch(`${categoriesUrl}/${categoryId}`, {
 					method: "PUT",
 					headers: {
 							"Content-Type": "application/json",
@@ -113,9 +114,99 @@ function cancelEdit(categoryId) {
 	resetRow(row);
 }
 
+// Delete a category
+async function deleteCategory(categoryId) {
+	if (!confirm("Are you sure you want to delete this category?")) {
+			return;
+	}
+
+	try {
+			const response = await fetch(`${categoriesUrl}/categories/${categoryId}`, {
+					method: "DELETE",
+			});
+
+			if (!response.ok) {
+					const error = await response.json();
+					alert(`Error: ${error.detail}`);
+					return;
+			}
+
+			alert("Category deleted successfully!");
+			// Remove the row from the table
+			const row = document.querySelector(`#category-row-${categoryId}`);
+			if (row) {
+					row.remove();
+			}
+	} catch (error) {
+			console.error("Error deleting category:", error);
+			alert("An error occurred while deleting the category.");
+	}
+}
+
+
 // Reset row buttons after editing
 function resetRow(row) {
 	row.querySelector(".edit-button").style.display = "inline-block";
 	row.querySelector(".save-button").style.display = "none";
 	row.querySelector(".cancel-button").style.display = "none";
+}
+
+// Create a new category
+async function createCategory(event) {
+	event.preventDefault(); // Prevent form submission from refreshing the page
+
+	const nameInput = document.getElementById("category-name");
+	const colorInput = document.getElementById("category-color");
+
+	const newCategory = {
+			name: nameInput.value.trim(),
+			color: colorInput.value.trim(),
+	};
+
+	try {
+			const response = await fetch(categoriesUrl, {
+					method: "POST",
+					headers: {
+							"Content-Type": "application/json",
+					},
+					body: JSON.stringify(newCategory),
+			});
+
+			if (!response.ok) {
+					const error = await response.json();
+					alert(`Error: ${error.detail}`);
+					return;
+			}
+
+			const createdCategory = await response.json();
+			alert("Category created successfully!");
+
+			// Add the new category to the table
+			addCategoryToTable(createdCategory);
+
+			// Clear the form inputs
+			nameInput.value = "";
+			colorInput.value = "";
+	} catch (error) {
+			console.error("Error creating category:", error);
+			alert("An error occurred while creating the category.");
+	}
+}
+
+// Add a new category to the table
+function addCategoryToTable(category) {
+	const tableBody = document.querySelector("#categories-table tbody");
+
+	const row = document.createElement("tr");
+	row.id = `category-row-${category.id}`;
+	row.innerHTML = `
+			<td class="category-name">${category.name}</td>
+			<td class="category-color">${category.color}</td>
+			<td>
+					<button onclick="editCategory(${category.id})">Edit</button>
+					<button onclick="deleteCategory(${category.id})">Delete</button>
+			</td>
+	`;
+
+	tableBody.appendChild(row);
 }

@@ -11,11 +11,17 @@
     <h1>Manage Categories</h1>
 
     <!-- Form to add a new category -->
-    <form id="add-category-form" action="/categories" method="post">
-        <input type="text" name="name" placeholder="Category Name" required>
-        <input type="color" name="color" value="#ff0000" required>
-        <button type="submit">Add Category</button>
-    </form>
+		<h2>Create a New Category</h2>
+		<form id="create-category-form" onsubmit="createCategory(event)">
+				<label for="category-name">Name:</label>
+				<input type="text" id="category-name" name="name" required>
+
+				<label for="category-color">Color:</label>
+				<input type="text" id="category-color" name="color" placeholder="e.g., #FF5733" required>
+
+				<button type="submit">Create</button>
+		</form>
+		<hr>
 
     <!-- Table to display existing categories -->
 		<table>
