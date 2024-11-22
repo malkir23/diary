@@ -54,7 +54,6 @@ function enableEdit(categoryId) {
 	colorCell.firstChild.disabled = false;
 
 	// Show save and cancel buttons, hide edit button
-	console.log(row);
 
 	row.querySelector(".edit-button").style.display = "none";
 	row.querySelector(".save-button").style.display = "inline-block";
@@ -111,7 +110,7 @@ function cancelEdit(categoryId) {
 
 	// Restore original values
 	nameCell.textContent = nameCell.dataset.originalValue;
-	colorCell.textContent = colorCell.dataset.originalValue;
+	colorCell.firstChild.value = colorCell.dataset.originalValue;
 
 	resetRow(row);
 }
