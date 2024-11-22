@@ -22,6 +22,14 @@
                     </ul>
                 </div>
                 <div class="column">
+                    <h3>Виконується</h3>
+                    <ul class="task-list" id="pre-flight-in-progress">
+                        {% for task in tasks.pre_flight.in_progress %}
+                        <li draggable="true" class="task">{{ task }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column">
                     <h3>Зроблено</h3>
                     <ul class="task-list" id="pre-flight-done">
                         {% for task in tasks.pre_flight.done %}
@@ -45,6 +53,14 @@
                     </ul>
                 </div>
                 <div class="column">
+                    <h3>Виконується</h3>
+                    <ul class="task-list" id="in-flight-in-progress">
+                        {% for task in tasks.in_flight.in_progress %}
+                        <li draggable="true" class="task">{{ task }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column">
                     <h3>Зроблено</h3>
                     <ul class="task-list" id="in-flight-done">
                         {% for task in tasks.in_flight.done %}
@@ -63,6 +79,14 @@
                     <h3>Зробити</h3>
                     <ul class="task-list" id="post-flight-todo">
                         {% for task in tasks.post_flight.todo %}
+                        <li draggable="true" class="task">{{ task }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>Виконується</h3>
+                    <ul class="task-list" id="post-flight-in-progress">
+                        {% for task in tasks.post_flight.in_progress %}
                         <li draggable="true" class="task">{{ task }}</li>
                         {% endfor %}
                     </ul>

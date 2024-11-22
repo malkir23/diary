@@ -16,8 +16,21 @@ router = APIRouter()
 async def get_table(request: Request):
     # You can add task data here for dynamic rendering
     tasks_data = {
-        "pre_flight": {"todo": ["Check tickets", "Pack luggage"], "done": ["Prepare documents"]},
-        "in_flight": {"todo": ["Read book", "Eat snacks"], "done": ["Seatbelt on"]},
-        "post_flight": {"todo": ["Collect luggage"], "done": ["Find transport"]},
+        "pre_flight": {
+            "todo": ["Task 1", "Task 2"],
+            "in_progress": ["Task 3"],
+            "done": ["Task 4"]
+        },
+        "in_flight": {
+            "todo": ["Task A"],
+            "in_progress": ["Task B"],
+            "done": ["Task C"]
+        },
+        "post_flight": {
+            "todo": ["Task X"],
+            "in_progress": [],
+            "done": ["Task Y"]
+        }
     }
+
     return TEMPLATES.get_template("index.html").render(request=request, tasks=tasks_data)
