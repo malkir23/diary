@@ -44,3 +44,7 @@ async def value_error_exception_handler(request: Request, exc: ValueError):
         status_code=400,
         content={"error": msg}
     )
+
+@backend.on_event("startup")
+async def startup_event():
+    await init_db()

@@ -1,6 +1,7 @@
 from backend.settings.config import settings
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy import select, and_
+from backend.models.tasks import Category, Task
 
 
 class DatabaseConnection:
@@ -57,3 +58,9 @@ class DatabaseConnection:
 
             return True
         return False
+
+async def init_db():
+    engine = DatabaseConnection().engine
+    async with engine.begin() as conn:
+        for table in (Category, Task):
+            await conn.run_sync(table.metadata.create_all)
