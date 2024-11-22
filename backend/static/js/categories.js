@@ -55,9 +55,9 @@ function enableEdit(categoryId) {
 
 	// Show save and cancel buttons, hide edit button
 
-	row.querySelector(".edit-button").style.display = "none";
-	row.querySelector(".save-button").style.display = "inline-block";
-	row.querySelector(".cancel-button").style.display = "inline-block";
+	row.children[2].children[0].style.display = "none";
+	row.children[2].children[1].style.display = "inline-block";
+	row.children[2].children[2].style.display = "inline-block";
 }
 
 // Save the updated category
@@ -93,7 +93,7 @@ async function saveEdit(categoryId) {
 
 			// Update the row with new values and reset buttons
 			row.querySelector(".category-name").textContent = updatedName;
-			row.querySelector(".category-color").textContent = `<td class="category-color"><input type="color" value="${updatedColor}" disabled></td>`;
+			row.querySelector(".category-color").innerHTML = `<input type="color" value="${updatedColor}" disabled>`;
 
 			resetRow(row);
 	} catch (error) {
