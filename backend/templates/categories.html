@@ -1,36 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manage Categories</title>
-    <link rel="stylesheet" href="/static/css/u4u.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/static/css/u4u.css" />
+  </head>
+  <body>
     <h1>Manage Categories</h1>
 
     <div class="form-container">
-        <h2>Create Category</h2>
-        <form id="create-category-form">
-            <input type="text" id="new-category-name" placeholder="Category Name" required>
-            <button type="submit">Create</button>
-        </form>
-    </div>
-
-    <div class="categories-container">
-        <h2>Existing Categories</h2>
-        <ul id="categories-list"></ul>
+      <h2>Create Category</h2>
+      <form id="create-category-form">
+        <input
+          type="text"
+          id="new-category-name"
+          placeholder="Category Name"
+          required
+        />
+        <input type="color" id="new-category-color" required />
+        <button type="submit">Create</button>
+      </form>
     </div>
 
     <div class="form-container">
-        <h2>Edit Category</h2>
-        <form id="edit-category-form">
-            <select id="edit-category-id"></select>
-            <input type="text" id="edit-category-name" placeholder="New Name" required>
-            <button type="submit">Update</button>
-        </form>
+      <h2>Edit Category</h2>
+      <form id="edit-category-form">
+        <select id="edit-category-id"></select>
+        <input
+          type="text"
+          id="edit-category-name"
+          placeholder="New Name"
+          required
+        />
+        <input type="color" id="edit-category-color" required />
+        <button type="submit">Update</button>
+      </form>
     </div>
 
     <script src="/static/js/categories.js"></script>
-</body>
+  </body>
 </html>
