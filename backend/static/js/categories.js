@@ -204,6 +204,8 @@ function addCategoryToTable(category) {
 			<td class="category-color"><input type="color" value="${category.color}" disabled></td>
 			<td>
 					<button onclick="enableEdit(${category.id})">Edit</button>
+					<button onclick="saveEdit(${category.id})" class="save-button" style="display: none;">Save</button>
+					<button onclick="cancelEdit(${category.id})" class="cancel-button" style="display: none;">Cancel</button>
 					<button onclick="deleteCategory(${category.id})">Delete</button>
 			</td>
 	`;
