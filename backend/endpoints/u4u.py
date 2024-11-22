@@ -1,3 +1,4 @@
+from unicodedata import category
 from fastapi import Request, APIRouter, HTTPException
 from typing import List
 from fastapi.responses import HTMLResponse
@@ -50,9 +51,10 @@ async def delete_task(task_id: int):
 async def create_category(category: dict):
     return await CATEGORYS.insert(category)
 
-@router.get("/categories")
-async def list_categories():
-    return await CATEGORYS.find()
+@router.get("/categories/list", response_class=HTMLResponse)
+async def list_categories(request: Request):
+    categories = await CATEGORYS.find()
+    return TEMPLATES.get_template("categories.html").render(request=request, categories=categories)
 
 @router.put("/categories/{category_id}")
 async def update_category(category_id: int, updated_data: dict):

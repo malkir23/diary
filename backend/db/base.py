@@ -59,6 +59,26 @@ class DatabaseConnection:
             return True
         return False
 
+    @classmethod
+    async def delete(cls, base, filters):
+        async with AsyncSession(cls._instance.engine) as session:
+            stmt = (
+                select(base)
+                .where(*[getattr(base, column) == value for column, value in filters.items()])
+            )
+
+            items_to_delete = (await session.execute(stmt)).scalars().all()
+
+            if not items_to_delete:
+                return False
+
+            for item in items_to_delete:
+                await session.delete(item)
+
+            await session.commit()
+            return True
+
+
 async def init_db():
     engine = DatabaseConnection().engine
     async with engine.begin() as conn:

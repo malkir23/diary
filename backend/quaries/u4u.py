@@ -20,7 +20,7 @@ class Tasks:
         return await DatabaseConnection.update(Task, filters, update_fields)
     @classmethod
     async def delete(cls, filters=None):
-        return await DatabaseConnection.get(Task, filters)
+        return await DatabaseConnection.delete(Task, filters)
 
 
 class Categorys:
@@ -40,7 +40,7 @@ class Categorys:
         return await DatabaseConnection.update(Category, filters, update_fields)
     @classmethod
     async def delete(cls, filters=None):
-        return await DatabaseConnection.get(Category, filters)
+        return await DatabaseConnection.delete(Category, filters)
 
 TASKS = Tasks()
 CATEGORYS = Categorys()
