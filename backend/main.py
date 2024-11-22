@@ -6,6 +6,7 @@ from .endpoints import auth, users, downloads, u4u
 from fastapi_jwt_auth import AuthJWT
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
+from backend.db.base import init_db
 
 
 @AuthJWT.load_config
