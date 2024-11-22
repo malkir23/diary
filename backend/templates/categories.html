@@ -1,44 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Categories</title>
-    <link rel="stylesheet" href="/static/css/u4u.css" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="/static/css/u4u.css">
+    <script src="/static/js/categories.js" defer></script>
+</head>
+<body>
     <h1>Manage Categories</h1>
 
-    <div class="form-container">
-      <h2>Create Category</h2>
-      <form id="create-category-form">
-        <input
-          type="text"
-          id="new-category-name"
-          placeholder="Category Name"
-          required
-        />
-        <input type="color" id="new-category-color" required />
-        <button type="submit">Create</button>
-      </form>
-    </div>
+    <!-- Form to add a new category -->
+    <form id="add-category-form" action="/categories" method="post">
+        <input type="text" name="name" placeholder="Category Name" required>
+        <input type="color" name="color" value="#ff0000" required>
+        <button type="submit">Add Category</button>
+    </form>
 
-    <div class="form-container">
-      <h2>Edit Category</h2>
-			{{ categories }}
-      <form id="edit-category-form">
-        <select id="edit-category-id"></select>
-        <input
-          type="text"
-          id="edit-category-name"
-          placeholder="New Name"
-          required
-        />
-        <input type="color" id="edit-category-color" required />
-        <button type="submit">Update</button>
-      </form>
-    </div>
-
-    <script src="/static/js/categories.js"></script>
-  </body>
+    <!-- Table to display existing categories -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Color</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                <td>{{ category.id }}</td>
+                <td>{{ category.name }}</td>
+                <td>
+                    <span style="display:inline-block; width:20px; height:20px; background-color:{{ category.color }};"></span>
+                    {{ category.color }}
+                </td>
+                <td>
+                    <button onclick="deleteCategory({{ category.id }})">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
 </html>
