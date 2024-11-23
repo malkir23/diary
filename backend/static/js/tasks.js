@@ -4,14 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	const taskTableBody = document.querySelector("#tasks-table tbody");
 
 	function resetRow(row) {
-
-		// Make cells editable
-		nameInput.disabled = true;
-		descriptionInput.disabled = true;
-		statusInput.disabled = true;
-		typeInput.disabled = true;
-		categoryInput.disabled = true;
-
 		row.children[5].children[0].style.display = "inline-block";
 		row.children[5].children[1].style.display = "none";
 		row.children[5].children[2].style.display = "none";
@@ -173,6 +165,13 @@ window.saveEdit = async (taskId) => {
 			row.querySelector(".task-type select").value = updatedType;
 			row.querySelector(".task-category select").value = updatedCategory;
 
+			// Make cells disabled
+			nameInput.disabled = true;
+			descriptionInput.disabled = true;
+			statusInput.disabled = true;
+			typeInput.disabled = true;
+			categoryInput.disabled = true;
+
 			resetRow(row);
 	} catch (error) {
 			console.error("Error updating task:", error);
@@ -194,6 +193,13 @@ window.saveEdit = async (taskId) => {
 		statusInput.value = statusInput.dataset.originalValue;
 		typeInput.value = typeInput.dataset.originalValue;
 		categoryInput.value = categoryInput.dataset.originalValue;
+
+		// Make cells disabled
+		nameInput.disabled = true;
+		descriptionInput.disabled = true;
+		statusInput.disabled = true;
+		typeInput.disabled = true;
+		categoryInput.disabled = true;
 
 		resetRow(row);
 	}
