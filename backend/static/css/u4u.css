@@ -1,134 +1,64 @@
 /* u4u.css */
 
-/* General Styles */
+/* Global Styles */
 body {
 	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
-	background-color: #f5f7fa;
+	background-color: #f5f5f5;
 	color: #333;
+	margin: 0;
+	padding: 20px;
 }
 
-h1 {
-	text-align: center;
-	margin-top: 20px;
-	font-size: 2rem;
-	color: #2c3e50;
+h1, h2 {
+	color: #8b4513; /* Warm brown */
 }
 
-h2 {
-	text-align: center;
-	font-size: 1.5rem;
-	color: #34495e;
+/* Navigation */
+.navigation {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
 }
 
+.nav-button {
+	padding: 10px 20px;
+	background-color: #f0e68c; /* Warm yellow */
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease-in-out;
+}
+
+.nav-button:hover {
+	background-color: #d4c772;
+}
+
+/* Table Container */
 .table-container {
 	display: flex;
-	justify-content: space-around;
-	flex-wrap: wrap;
-	margin: 20px auto;
-	gap: 20px;
-	padding: 0 10px;
+	justify-content: space-between;
 }
 
 .table {
-	width: 30%;
-	background-color: #ecf0f1;
-	border-radius: 10px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	padding: 15px;
-	transition: transform 0.2s ease;
-}
-
-.table:hover {
-	transform: scale(1.02);
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 20px;
+	background-color: #fff;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .task-list {
 	list-style: none;
 	padding: 0;
-	margin: 0;
 }
 
 .task {
-	background-color: #e1f5fe;
-	color: #0277bd;
-	padding: 10px;
-	margin: 5px 0;
+	padding: 10px 20px;
 	border-radius: 5px;
-	cursor: grab;
-	border: 1px solid #b3e5fc;
-	transition: background-color 0.3s ease, transform 0.2s ease;
+	cursor: move;
+	transition: background-color 0.3s ease-in-out;
 }
 
 .task:hover {
-	background-color: #81d4fa;
-	transform: scale(1.02);
-}
-
-.task:active {
-	cursor: grabbing;
-}
-
-.nav-button {
-	background-color: #4caf50;
-	color: white;
-	padding: 10px 20px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 1rem;
-	transition: background-color 0.3s ease;
-	margin: 10px;
-}
-
-.nav-button:hover {
-	background-color: #388e3c;
-}
-
-/* Pre-Flight */
-#pre-flight {
-	background-color: #fbe9e7;
-	border: 2px solid #d84315;
-}
-
-#pre-flight h2 {
-	color: #d84315;
-}
-
-/* In-Flight */
-#in-flight {
-	background-color: #e8f5e9;
-	border: 2px solid #388e3c;
-}
-
-#in-flight h2 {
-	color: #388e3c;
-}
-
-/* Post-Flight */
-#post-flight {
-	background-color: #e3f2fd;
-	border: 2px solid #1e88e5;
-}
-
-#post-flight h2 {
-	color: #1e88e5;
-}
-
-/* Mobile Responsiveness */
-@media screen and (max-width: 768px) {
-	.table-container {
-			flex-direction: column;
-			align-items: center;
-	}
-
-	.table {
-			width: 90%;
-	}
-
-	.nav-button {
-			width: 90%;
-			margin: 10px auto;
-	}
+	background-color: #f0e68c; /* Warm yellow */
 }
