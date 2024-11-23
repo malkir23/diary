@@ -42,6 +42,8 @@ async def list_tasks(request: Request):
     tasks.sort(key=lambda x: x["id"])
     categories = await CATEGORYS.find()
     categories.sort(key=lambda x: x["id"])
+    print(settings.TASKS_TYPE)
+    print(categories)
     return TEMPLATES.get_template("tasks.html").render(
         request=request, tasks=tasks, categories=categories,
         categories_json=json.dumps(categories),
