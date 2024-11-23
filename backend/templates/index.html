@@ -20,7 +20,7 @@
             <h2>Перед Вилітом</h2>
             <ul class="task-list" id="pre-flight-tasks">
                 {% for task in tasks.pre_flight %}
-                <li draggable="true" class="task" style="background-color: {{ categorys[task.category_id].color }};">{{ task.title }}</li>
+                <li draggable="true" class="task" style="background-color: {{ categories[task.category_id].color }};">{{ task.title }}</li>
                 {% endfor %}
             </ul>
         </div>
