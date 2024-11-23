@@ -24,7 +24,10 @@
             </select>
 
             <label for="task-category">Category:</label>
-            <input type="text" id="task-category" name="category" required>
+						<select id="task-category" name="category" required></select>
+            	{% for category in categories %}
+								<option value="{{ category.id }}">{{ category.name }}</option>
+							{% endfor %}
 
             <button type="submit">Create Task</button>
         </form>

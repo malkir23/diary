@@ -16,6 +16,7 @@ TEMPLATES = Environment(
 
 router = APIRouter()
 
+
 @router.get("/table", response_class=HTMLResponse)
 async def get_table(request: Request):
     tasks = await TASKS.find()
@@ -23,18 +24,26 @@ async def get_table(request: Request):
     for task in tasks:
         tasks_data.setdefault(task["type"], []).append(task)
 
-    return TEMPLATES.get_template("index.html").render(request=request, tasks=tasks_data)
+    return TEMPLATES.get_template("index.html").render(
+        request=request, tasks=tasks_data
+    )
 
 
 @router.post("/tasks")
 async def create_task(task: dict):
     return await TASKS.insert(task)
 
+
 @router.get("/tasks", response_class=HTMLResponse)
 async def list_tasks(request: Request):
     tasks = await TASKS.find()
     tasks.sort(key=lambda x: x["id"])
-    return TEMPLATES.get_template("tasks.html").render(request=request, tasks=tasks)
+    categories = await CATEGORYS.find()
+    categories.sort(key=lambda x: x["id"])
+    return TEMPLATES.get_template("tasks.html").render(
+        request=request, tasks=tasks, categories=categories
+    )
+
 
 @router.put("/tasks/{task_id}")
 async def update_task(task_id: int, updated_data: dict):
@@ -43,6 +52,7 @@ async def update_task(task_id: int, updated_data: dict):
         raise HTTPException(status_code=404, detail="Task not found")
     return {"message": "Task updated successfully"}
 
+
 @router.delete("/tasks/{task_id}")
 async def delete_task(task_id: int):
     deleted = await TASKS.delete({"id": task_id})
@@ -50,15 +60,20 @@ async def delete_task(task_id: int):
         raise HTTPException(status_code=404, detail="Task not found")
     return {"message": "Task deleted successfully"}
 
+
 @router.post("/categories")
 async def create_category(category: dict):
     return await CATEGORYS.insert(category)
+
 
 @router.get("/categories/list", response_class=HTMLResponse)
 async def list_categories(request: Request):
     categories = await CATEGORYS.find()
     categories.sort(key=lambda x: x["id"])
-    return TEMPLATES.get_template("categories.html").render(request=request, categories=categories)
+    return TEMPLATES.get_template("categories.html").render(
+        request=request, categories=categories
+    )
+
 
 @router.put("/categories/{category_id}")
 async def update_category(category_id: int, updated_data: dict):
@@ -66,6 +81,7 @@ async def update_category(category_id: int, updated_data: dict):
     if not updated:
         raise HTTPException(status_code=404, detail="Category not found")
     return {"message": "Category updated successfully"}
+
 
 @router.delete("/categories/{category_id}")
 async def delete_category(category_id: int):
