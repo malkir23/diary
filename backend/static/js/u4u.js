@@ -33,12 +33,18 @@ tables.forEach(table => {
             console.error("Target column not found");
             return;
         }
+				console.log(targetColumn);
+				console.log(table);
+
+
 
         if (targetColumn.parentNode.parentNode === table) {
             targetColumn.appendChild(draggedTaskElement);
 
             // Extract the new status from the column's ID
             const newStatus = targetColumn.id.split('-')[1];
+						console.log(newStatus);
+
             updateTaskStatus(draggedTaskId.split('-')[1], newStatus); // Pass task ID without "task-" prefix
         }
     });
