@@ -9,6 +9,10 @@
 <body>
     <h1>Task Management</h1>
 
+		<div class="navigation">
+			<button onclick="location.href='/api/u4u/table'" class="nav-button">До списку</button>
+		</div>
+
     <!-- Form for adding new tasks -->
     <div id="task-form-container">
         <h2>Create a New Task</h2>
@@ -68,6 +72,8 @@
 									<td class="task-category">{{ task.category }}</td>
 									<td>
 										<button onclick="editTask({{ task.id }})">Edit</button>
+										<button class="save-button" onclick="saveEdit({{ task.id }})" style="display: none;">Save</button>
+										<button class="cancel-button" onclick="cancelEdit({{ task.id }})" style="display: none;">Cancel</button>
 										<button onclick="deleteTask({{ task.id }})">Delete</button>
 									</td>
 								</tr>

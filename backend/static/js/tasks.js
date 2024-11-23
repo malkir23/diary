@@ -2,21 +2,9 @@ const tasksUrl = "/api/u4u/tasks";
 document.addEventListener("DOMContentLoaded", () => {
 	const taskForm = document.getElementById("task-form");
 	const taskTableBody = document.querySelector("#tasks-table tbody");
-	const categorySelect = document.getElementById("task-category");
-
-	// Fetch existing tasks
-	async function fetchData() {
-			const tasksResponse = await fetch(`${tasksUrl}/list`);
-
-			const tasks = await tasksResponse.json();
-
-			// Populate tasks table
-			tasks.forEach(addTaskToTable);
-	}
 
 	// Add a task row to the table
 	function addTaskToTable(task) {
-		console.log(task);
 
 			const row = document.createElement("tr");
 			row.id = `task-row-${task.id}`;
@@ -61,10 +49,80 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 	});
 
-	// Edit a task (similar to the previous implementation)
-	window.editTask = (taskId) => {
-			// Inline editing logic here
+// Enable editing for a task row
+function enableEdit(taskId) {
+	const row = document.querySelector(`#task-row-${taskId}`);
+	const nameCell = row.querySelector(".task-name");
+	const colorCell = row.querySelector(".task-color");
+
+	// Store the current values in data attributes in case of cancel
+	nameCell.dataset.originalValue = nameCell.textContent.trim();
+	colorCell.dataset.originalValue = colorCell.textContent.trim();
+
+	// Make cells editable
+	nameCell.innerHTML = `<input type="text" value="${nameCell.textContent.trim()}" class="edit-input" />`;
+	colorCell.firstChild.disabled = false;
+
+	// Show save and cancel buttons, hide edit button
+
+	row.children[2].children[0].style.display = "none";
+	row.children[2].children[1].style.display = "inline-block";
+	row.children[2].children[2].style.display = "inline-block";
+}
+
+// Save the updated task
+async function saveEdit(taskId) {
+	const row = document.querySelector(`#task-row-${taskId}`);
+	const nameInput = row.querySelector(".task-name input");
+	const descriptionInput = row.querySelector(".task-description input");
+	const statusInput = row.querySelector(".task-status input");
+	const typeInput = row.querySelector(".task-type input");
+	const categoryInput = row.querySelector(".task-category input");
+
+
+	const updatedName = nameInput.value.trim();
+	const updatedDescription = descriptionInput.value.trim();
+	const updatedStatus = statusInput.value.trim();
+	const updatedType = typeInput.value.trim();
+	const updatedCategory = categoryInput.value.trim();
+
+	const requestBody = {
+			title: updatedName,
+			description: updatedDescription,
+			status: updatedStatus,
+			type: updatedType,
+			category_id: updatedCategory,
 	};
+
+	try {
+			const response = await fetch(`${tasksUrl}/${taskId}`, {
+					method: "PUT",
+					headers: {
+							"Content-Type": "application/json",
+					},
+					body: JSON.stringify(requestBody),
+			});
+
+			if (!response.ok) {
+					const error = await response.json();
+					alert(`Error: ${error.detail}`);
+					return;
+			}
+
+			alert("Task updated successfully!");
+
+			row.querySelector(".task-name").textContent = updatedName;
+			row.querySelector(".task-description").textContent = updatedColor;
+			row.querySelector(".task-status").textContent = updatedStatus;
+			row.querySelector(".task-type").textContent = updatedType;
+			row.querySelector(".task-category").textContent = updatedCategory;
+
+			resetRow(row);
+	} catch (error) {
+			console.error("Error updating task:", error);
+			alert("An error occurred while updating the task.");
+	}
+}
 
 	// Delete a task
 	window.deleteTask = async (taskId) => {
