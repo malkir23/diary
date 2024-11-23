@@ -123,6 +123,11 @@
         </table>
     </div>
 
+		<script>
+			const statuses = {{ statuses|tojson }};
+			const types = {{ types|tojson }};
+			const	categories = {{ categories|tojson }};
+		</script>
     <script src="/static/js/tasks.js"></script>
 </body>
 </html>

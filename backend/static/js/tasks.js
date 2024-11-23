@@ -1,7 +1,4 @@
 const tasksUrl = "/api/u4u/tasks";
-const statuses = {{ statuses|tojson }};
-const types = {{ types|tojson }};
-const	categories = {{ categories|tojson }};
 document.addEventListener("DOMContentLoaded", () => {
 	const taskForm = document.getElementById("task-form");
 	const taskTableBody = document.querySelector("#tasks-table tbody");
