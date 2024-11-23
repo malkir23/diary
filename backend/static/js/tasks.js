@@ -43,14 +43,14 @@ document.addEventListener("DOMContentLoaded", () => {
 					</td>
 					<td class="task-category">
 							<select value="${task.category_id}" disabled>
-							${Object.values(JSON.parse(categories)).map((category) => `
+							${JSON.parse(categories).forEach(category => { `
 								<option
 									value="${category.id}"
 									${category.id == task.category_id ? "selected" : ""}
 								>
 									${category.name}
 								</option>
-							`).join("")}
+							`})}
 							</select>
 					</td>
 					<td>
