@@ -24,6 +24,7 @@ tables.forEach(table => {
 
         const draggedTaskId = event.dataTransfer.getData('text/plain');
 				const tableId = event.dataTransfer.getData('text/table');
+				const currentTableId = table.getAttribute('id');
         const draggedTaskElement = document.getElementById(draggedTaskId);
         if (!draggedTaskElement) {
             console.error("Dragged task element not found");
@@ -42,11 +43,11 @@ tables.forEach(table => {
 
 
 
-        if (table.getAttribute('id') === tableId) {
+        if (currentTableId === tableId) {
             targetColumn.appendChild(draggedTaskElement);
 
             // Extract the new status from the column's ID
-            const newStatus = targetColumn.id.split('-')[1];
+            const newStatus = targetColumn.id.replace(currentTableId, '');
 						console.log(newStatus);
 
             updateTaskStatus(draggedTaskId.split('-')[1], newStatus); // Pass task ID without "task-" prefix
@@ -55,6 +56,8 @@ tables.forEach(table => {
 });
 
 function updateTaskStatus(taskId, newStatus) {
+	console.log(taskId, newStatus);
+
     fetch(`/api/u4u/tasks/${taskId}`, {
         method: 'PUT',
         headers: {
