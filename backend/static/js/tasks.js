@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 // Enable editing for a task row
-function enableEdit(taskId) {
+window.enableEdit = async (taskId) =>{
 	const row = document.querySelector(`#task-row-${taskId}`);
 	const nameCell = row.querySelector(".task-name");
 	const colorCell = row.querySelector(".task-color");
@@ -71,7 +71,7 @@ function enableEdit(taskId) {
 }
 
 // Save the updated task
-async function saveEdit(taskId) {
+window.saveEdit = async (taskId) => {
 	const row = document.querySelector(`#task-row-${taskId}`);
 	const nameInput = row.querySelector(".task-name input");
 	const descriptionInput = row.querySelector(".task-description input");
