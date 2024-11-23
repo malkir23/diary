@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	// Add a task row to the table
 	function addTaskToTable(task) {
-		console.log(categories);
+		console.log(JSON.parse(categories));
 
 
 			const row = document.createElement("tr");
