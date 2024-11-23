@@ -44,6 +44,7 @@ async def list_tasks(request: Request):
     categories.sort(key=lambda x: x["id"])
     return TEMPLATES.get_template("tasks.html").render(
         request=request, tasks=tasks, categories=categories,
+        categories_json=json.dumps(categories),
         types=settings.TASKS_TYPE, statuses=settings.TASKS_STATUS
     )
 
