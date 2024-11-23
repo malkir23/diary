@@ -1,10 +1,11 @@
+const tasksUrl = "/api/u4u/tasks";
 document.addEventListener("DOMContentLoaded", () => {
 	const taskForm = document.getElementById("task-form");
 	const taskTableBody = document.querySelector("#tasks-table tbody");
 
 	// Fetch existing tasks and populate the table
 	async function fetchTasks() {
-			const response = await fetch("/tasks/list");
+			const response = await fetch(`${tasksUrl}/list`);
 			const tasks = await response.json();
 
 			tasks.forEach(addTaskToTable);
@@ -36,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					category: taskForm["category"].value,
 			};
 
-			const response = await fetch("/tasks", {
+			const response = await fetch(tasksUrl, {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify(taskData),
@@ -80,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			const type = row.querySelector(".task-type select").value;
 			const category = row.querySelector(".task-category input").value;
 
-			const response = await fetch(`/tasks/${taskId}`, {
+			const response = await fetch(`${tasksUrl}/${taskId}`, {
 					method: "PUT",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ name, type, category }),
@@ -107,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Delete a task
 	window.deleteTask = async (taskId) => {
-			const response = await fetch(`/tasks/${taskId}`, { method: "DELETE" });
+			const response = await fetch(`${tasksUrl}/${taskId}`, { method: "DELETE" });
 
 			if (response.ok) {
 					document.getElementById(`task-row-${taskId}`).remove();
