@@ -1,3 +1,4 @@
+from asyncio import tasks
 from unicodedata import category
 from fastapi import Request, APIRouter, HTTPException
 from typing import List
@@ -30,8 +31,10 @@ async def create_task(task: dict):
     return await TASKS.insert(task)
 
 @router.get("/tasks")
-async def list_tasks():
-    return await TASKS.find()
+async def list_tasks(request: Request):
+    tasks = await TASKS.find()
+    tasks.sort(key=lambda x: x["id"])
+    return TEMPLATES.get_template("tasks.html").render(request=request, tasks=tasks)
 
 @router.put("/tasks/{task_id}")
 async def update_task(task_id: int, updated_data: dict):

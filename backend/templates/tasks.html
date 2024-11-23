@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management</title>
+    <link rel="stylesheet" href="/static/css/u4u.css">
+</head>
+<body>
+    <h1>Task Management</h1>
+
+    <!-- Form for adding new tasks -->
+    <div id="task-form-container">
+        <h2>Create a New Task</h2>
+        <form id="task-form">
+            <label for="task-name">Name:</label>
+            <input type="text" id="task-name" name="name" required>
+
+            <label for="task-type">Type:</label>
+            <select id="task-type" name="type">
+                <option value="todo">Todo</option>
+                <option value="in-progress">In Progress</option>
+                <option value="done">Done</option>
+            </select>
+
+            <label for="task-category">Category:</label>
+            <input type="text" id="task-category" name="category" required>
+
+            <button type="submit">Create Task</button>
+        </form>
+    </div>
+
+    <!-- Table for displaying tasks -->
+    <div id="tasks-table-container">
+        <h2>Tasks</h2>
+        <table id="tasks-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dynamically populated rows -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="/static/js/tasks.js"></script>
+</body>
+</html>
