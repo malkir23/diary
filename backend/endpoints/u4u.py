@@ -34,7 +34,7 @@ async def create_task(task: dict):
     return await TASKS.insert(task)
 
 
-@router.get("/tasks", response_class=HTMLResponse)
+@router.get("/tasks/list", response_class=HTMLResponse)
 async def list_tasks(request: Request):
     tasks = await TASKS.find()
     tasks.sort(key=lambda x: x["id"])
