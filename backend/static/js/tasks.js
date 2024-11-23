@@ -12,6 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
 	function addTaskToTable(task) {
 		console.log(categories);
 		console.log(typeof categories);
+		JSON.parse(categories).forEach(category =>{
+			console.log(category);
+
+			console.log(category.id);
+			console.log(category.name);
+		});
 			const row = document.createElement("tr");
 			row.id = `task-row-${task.id}`;
 			row.innerHTML = `
