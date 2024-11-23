@@ -2,7 +2,7 @@ from asyncio import tasks
 import json
 from unicodedata import category
 from fastapi import Request, APIRouter, HTTPException
-from typing import List
+from backend.settings.config import settings
 from fastapi.responses import HTMLResponse
 from jinja2 import Environment, select_autoescape, PackageLoader
 from backend.quaries.u4u import TASKS, CATEGORYS
@@ -43,7 +43,8 @@ async def list_tasks(request: Request):
     categories = await CATEGORYS.find()
     categories.sort(key=lambda x: x["id"])
     return TEMPLATES.get_template("tasks.html").render(
-        request=request, tasks=tasks, categories=categories
+        request=request, tasks=tasks, categories=categories,
+        types=settings.TASKS_TYPE, statuses=settings.TASKS_STATUS
     )
 
 

@@ -25,22 +25,22 @@
 
             <label for="task-status">Status:</label>
             <select id="task-status" name="status">
-                <option value="todo">Todo</option>
-                <option value="in_progress">In Progress</option>
-                <option value="done">Done</option>
+								{% for value, status in statuses.items() %}
+									<option value="{{ value }}">{{ status }}</option>
+								{% endfor %}
             </select>
 
             <label for="task-type">Type:</label>
             <select id="task-type" name="type">
-                <option value="pre_flight">Pre-Flight</option>
-                <option value="in_flight">In-Flight</option>
-                <option value="post_flight">Post-Flight</option>
+								{% for value, type in types.items() %}
+									<option value="{{ value }}">{{ type }}</option>
+								{% endfor %}
             </select>
 
             <label for="task-category">Category:</label>
             <select id="task-category" name="category_id" required>
             	{% for category in categories %}
-								<option value="{{ category.id }}">{{ category.name }}</option>
+								<option value="{{ category.id }}" style="background-color: {{ category.color }}">{{ category.name }}</option>
 							{% endfor %}
 						</select>
 
@@ -67,9 +67,28 @@
 								<tr id="task-row-{{ task.id }}">
 									<td class="task-title"><input type="text" value="{{ task.title }}" disabled></td>
 									<td class="task-description"><input type="text" value="{{ task.description }}" disabled></td>
-									<td class="task-status"><input type="text" value="{{ task.status }}" disabled></td>
-									<td class="task-type"><input type="text" value="{{ task.type }}" disabled></td>
-									<td class="task-category"><input type="text" value="{{ task.category }}" disabled></td>
+									<td class="task-status">
+										<option value="{{ task.status }}" disabled>
+											{% for value, status in statuses.items() %}
+												<option value="{{ value }}">{{ status }}</option>
+											{% endfor %}
+										</option>
+
+									</td>
+									<td class="task-type">
+										<option value="{{ task.type }}" disabled>
+											{% for value, type in types.items() %}
+												<option value="{{ value }}">{{ type }}</option>
+											{% endfor %}
+										</option>
+									</td>
+									<td class="task-category">
+										<option value="{{ task.category_id }}" disabled>
+											{% for category in categories %}
+												<option value="{{ category.id }}" style="background-color: {{ category.color }}">{{ category.name }}</option>
+											{% endfor %}
+										</option>
+									</td>
 									<td>
 										<button onclick="enableEdit({{ task.id }})">Edit</button>
 										<button class="save-button" onclick="saveEdit({{ task.id }})" style="display: none;">Save</button>

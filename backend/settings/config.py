@@ -29,6 +29,9 @@ class Settings(BaseSettings):
     FRONT_PORT: int
     TESTING: bool
 
+    TASKS_TYPE: {'pre_flight': 'Pre-Flight', 'in_flight': 'In-Flight', 'post_flight': 'Post-Flight'}
+    TASKS_STATUS: {'todo': 'Заплановано', 'in_progress': 'У процесі', 'done': 'Виконано'}
+
     class Config:
         env_file = "backend/.env"
 
