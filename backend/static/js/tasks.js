@@ -162,7 +162,7 @@ window.saveEdit = async (taskId) => {
 			alert("Task updated successfully!");
 
 			row.querySelector(".task-title input").value = updatedName;
-			row.querySelector(".task-description input").value = updatedDescription;
+			row.querySelector(".task-description textarea").value = updatedDescription;
 			row.querySelector(".task-status select").value = updatedStatus;
 			row.querySelector(".task-type select").value = updatedType;
 			row.querySelector(".task-category select").value = updatedCategory;
