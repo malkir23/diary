@@ -10,8 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	// Add a task row to the table
 	function addTaskToTable(task) {
-		console.log(Object.entries(categories));
+		const validJsonString = categories.replace(/'/g, '"');
 
+			// Parse the JSON string into a JavaScript object
+			const dataCategories = JSON.parse(validJsonString);
 			const row = document.createElement("tr");
 			row.id = `task-row-${task.id}`;
 			row.innerHTML = `
@@ -44,14 +46,14 @@ document.addEventListener("DOMContentLoaded", () => {
 					</td>
 					<td class="task-category">
 							<select value="${task.category_id}" disabled>
-							${Array.from(new Map(Object.entries(categories)).entries()).map(([key, value]) => `
+							${dataCategories.forEach(category => `
 								<option
-										value="${key}"
-										${key === task.category_id ? "selected" : ""}
+										value="${category.id}"
+										${category.id === task.category_id ? "selected" : ""}
 								>
-										${value.name}
+										${category.name}
 								</option>
-							`).join("")}
+							`)}
 							</select>
 					</td>
 					<td>
