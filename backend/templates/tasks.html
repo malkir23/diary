@@ -65,11 +65,11 @@
             <tbody>
 								{% for task in tasks %}
 								<tr id="task-row-{{ task.id }}">
-									<td class="task-title">{{ task.title }}</td>
-									<td class="task-description">{{ task.description }}</td>
-									<td class="task-status">{{ task.status }}</td>
-									<td class="task-type">{{ task.type }}</td>
-									<td class="task-category">{{ task.category }}</td>
+									<td class="task-title"><input type="text" value="{{ task.title }}" disabled></td>
+									<td class="task-description"><input type="text" value="{{ task.description }}" disabled></td>
+									<td class="task-status"><input type="text" value="{{ task.status }}" disabled></td>
+									<td class="task-type"><input type="text" value="{{ task.type }}" disabled></td>
+									<td class="task-category"><input type="text" value="{{ task.category }}" disabled></td>
 									<td>
 										<button onclick="enableEdit({{ task.id }})">Edit</button>
 										<button class="save-button" onclick="saveEdit({{ task.id }})" style="display: none;">Save</button>
