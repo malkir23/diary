@@ -70,7 +70,14 @@
 									<td class="task-status">
 										<select value="{{ task.status }}" disabled>
 											{% for value, status in statuses.items() %}
-												<option value="{{ value }}">{{ status }}</option>
+												<option
+													value="{{ value }}"
+													{% if value == task.status %}
+														selected
+													{% endif %}
+												>
+													{{ status }}
+												</option>
 											{% endfor %}
 										</select>
 
@@ -78,14 +85,29 @@
 									<td class="task-type">
 										<select value="{{ task.type }}" disabled>
 											{% for value, type in types.items() %}
-												<option value="{{ value }}">{{ type }}</option>
+												<option
+													value="{{ value }}"
+													{% if value == task.type %}
+														selected
+													{% endif %}
+												>
+													{{ type }}
+												</option>
 											{% endfor %}
 										</select>
 									</td>
 									<td class="task-category">
 										<select value="{{ task.category_id }}" disabled>
 											{% for category in categories %}
-												<option value="{{ category.id }}" style="background-color: {{ category.color }}">{{ category.name }}</option>
+												<option
+													value="{{ category.id }}"
+													{% if category.id == task.category_id %}
+														selected
+													{% endif %}
+													style="background-color: {{ category.color }}"
+												>
+													{{ category.name }}
+												</option>
 											{% endfor %}
 										</select>
 									</td>
