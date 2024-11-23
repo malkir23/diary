@@ -41,18 +41,25 @@ async def list_tasks(request: Request):
     tasks = await TASKS.find()
     tasks.sort(key=lambda x: x["id"])
     categories = await CATEGORYS.find()
+    categories = [
+        {"color": category["color"], "name": category["name"], "id": category["id"]}
+        for category in categories
+    ]
     categories.sort(key=lambda x: x["id"])
     return TEMPLATES.get_template("tasks.html").render(
-        request=request, tasks=tasks, categories=categories,
-        types=settings.TASKS_TYPE, statuses=settings.TASKS_STATUS
+        request=request,
+        tasks=tasks,
+        categories=categories,
+        types=settings.TASKS_TYPE,
+        statuses=settings.TASKS_STATUS,
     )
 
 
 @router.put("/tasks/{task_id}")
 async def update_task(task_id: int, updated_data: dict):
-    category_id = updated_data.get('category_id')
+    category_id = updated_data.get("category_id")
     if category_id:
-        updated_data['category_id'] = int(category_id)
+        updated_data["category_id"] = int(category_id)
     updated = await TASKS.update({"id": task_id}, updated_data)
     if not updated:
         raise HTTPException(status_code=404, detail="Task not found")
