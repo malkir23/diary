@@ -3,9 +3,8 @@ const tables = document.querySelectorAll('.table');
 
 tasks.forEach(task => {
     task.addEventListener('dragstart', (event) => {
-				// save id of task
         event.dataTransfer.setData('text/plain', task.id);
-				task.attributes['old-id'].value = task.id;
+				event.dataTransfer.setData('text/table', task.closest('.table').id);
     });
 });
 
@@ -24,6 +23,7 @@ tables.forEach(table => {
         event.preventDefault();
 
         const draggedTaskId = event.dataTransfer.getData('text/plain');
+				const tableId = event.dataTransfer.getData('text/table');
         const draggedTaskElement = document.getElementById(draggedTaskId);
         if (!draggedTaskElement) {
             console.error("Dragged task element not found");
@@ -42,7 +42,7 @@ tables.forEach(table => {
 
 
 
-        if (targetColumn.parentNode.parentNode === table) {
+        if (table.getAttribute('id') === tableId) {
             targetColumn.appendChild(draggedTaskElement);
 
             // Extract the new status from the column's ID
