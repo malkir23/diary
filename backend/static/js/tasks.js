@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	const taskTableBody = document.querySelector("#tasks-table tbody");
 
 	function resetRow(row) {
-		row.children[2].children[0].style.display = "inline-block";
-		row.children[2].children[1].style.display = "none";
-		row.children[2].children[2].style.display = "none";
+		row.children[5].children[0].style.display = "inline-block";
+		row.children[5].children[1].style.display = "none";
+		row.children[5].children[2].style.display = "none";
 	}
 	// Add a task row to the table
 	function addTaskToTable(task) {
@@ -79,9 +79,9 @@ window.enableEdit = async (taskId) =>{
 
 	// Show save and cancel buttons, hide edit button
 
-	row.children[2].children[0].style.display = "none";
-	row.children[2].children[1].style.display = "inline-block";
-	row.children[2].children[2].style.display = "inline-block";
+	row.children[5].children[0].style.display = "none";
+	row.children[5].children[1].style.display = "inline-block";
+	row.children[5].children[2].style.display = "inline-block";
 }
 
 // Save the updated task
