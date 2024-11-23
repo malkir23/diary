@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	// Add a task row to the table
 	function addTaskToTable(task) {
-		console.log(Object.getOwnPropertyNames( JSON.parse(categories)));
+		console.log(new Map(Object.entries(categories)));
 
 			const row = document.createElement("tr");
 			row.id = `task-row-${task.id}`;
@@ -44,14 +44,14 @@ document.addEventListener("DOMContentLoaded", () => {
 					</td>
 					<td class="task-category">
 							<select value="${task.category_id}" disabled>
-							${JSON.parse(categories).forEach(category => {`
+							${Array.from(new Map(Object.entries(categories)).entries()).map(([key, value]) => `
 								<option
-										value="${category.id}"
-										${category.id === task.category_id ? "selected" : ""}
+										value="${key}"
+										${key === task.category_id ? "selected" : ""}
 								>
-										${category.name}
+										${value.name}
 								</option>
-							`})}
+							`).join("")}
 							</select>
 					</td>
 					<td>
