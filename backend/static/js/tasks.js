@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					</td>
 					<td class="task-category">
 							<select value="${task.category_id}" disabled>
-								${Object.entries(JSON.parse(categories)).map(category =>
+								${JSON.parse(categories).map(category =>
 									`<option
 										value="${category.id}"
 										${category.id == task.category_id ? "selected" : ""}
