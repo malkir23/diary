@@ -21,8 +21,9 @@ tables.forEach(table => {
     table.addEventListener('drop', (event) => {
         event.preventDefault();
 
-        const draggedTaskId = event.dataTransfer.getData('text/plain');
-        const draggedTaskElement = document.getElementById(draggedTaskId);
+        const newPlace = event.dataTransfer.getData('text/plain');
+        const draggedTaskElement = document.getElementsByName(newPlace)[0];
+				const draggedTaskId = draggedTaskElement.id;
         if (!draggedTaskElement) {
             console.error("Dragged task element not found");
             return;
@@ -33,6 +34,8 @@ tables.forEach(table => {
             console.error("Target column not found");
             return;
         }
+				console.log(draggedTaskId);
+
 				console.log(targetColumn);
 				console.log(table);
 
@@ -45,7 +48,7 @@ tables.forEach(table => {
             const newStatus = targetColumn.id.split('-')[1];
 						console.log(newStatus);
 
-            updateTaskStatus(draggedTaskId.split('-')[1], newStatus); // Pass task ID without "task-" prefix
+            updateTaskStatus(newPlace.split('-')[1], newStatus); // Pass task ID without "task-" prefix
         }
     });
 });
