@@ -88,8 +88,7 @@ h1, h2 {
 	padding: 10px;
 	margin-bottom: 5px;
 	border-radius: 5px;
-	background-color: #e1f5fe;
-	color: #0277bd;
+	color: snow;
 	cursor: grab;
 	border: 1px solid #b3e5fc;
 	transition: background-color 0.3s ease-in-out;
