@@ -23,9 +23,10 @@ async def get_table(request: Request):
     tasks_data = {}
     for task in tasks:
         tasks_data.setdefault(task["type"], []).append(task)
-
+    categories = await CATEGORYS.find()
+    categories = {category["id"]: category for category in categories}
     return TEMPLATES.get_template("index.html").render(
-        request=request, tasks=tasks_data
+        request=request, tasks=tasks_data, categories=categories
     )
 
 
