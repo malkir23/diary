@@ -50,8 +50,10 @@ async def list_tasks(request: Request):
 
 @router.put("/tasks/{task_id}")
 async def update_task(task_id: int, updated_data: dict):
+    category_id = updated_data.get('category_id')
+    if category_id:
+        updated_data['category_id'] = int(category_id)
     updated = await TASKS.update({"id": task_id}, updated_data)
-    print(updated)
     if not updated:
         raise HTTPException(status_code=404, detail="Task not found")
     return {"message": "Task updated successfully"}
