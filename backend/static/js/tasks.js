@@ -1,4 +1,7 @@
 const tasksUrl = "/api/u4u/tasks";
+const statuses = {{ statuses|tojson }};
+const types = {{ types|tojson }};
+const	categories = {{ categories|tojson }};
 document.addEventListener("DOMContentLoaded", () => {
 	const taskForm = document.getElementById("task-form");
 	const taskTableBody = document.querySelector("#tasks-table tbody");
@@ -14,11 +17,45 @@ document.addEventListener("DOMContentLoaded", () => {
 			const row = document.createElement("tr");
 			row.id = `task-row-${task.id}`;
 			row.innerHTML = `
-					<td class="task-title">${task.title}</td>
-					<td class="task-description">${task.description}</td>
-					<td class="task-status">${task.status}</td>
-					<td class="task-type">${task.type}</td>
-					<td class="task-category">${task.category}</td>
+					<td class="task-title"><input type="text" value="${task.title}" disabled></td>
+					<td class="task-description"><input type="text" value="${task.description}" disabled></td>
+					<td class="task-status">
+						<select value="${task.status}" disabled>
+							${Object.entries(statuses).map(([value, status]) =>
+								`<option
+									value="${value}"
+									${value == task.status ? "selected" : ""}
+								>
+									${status}
+								</option>`).join("")
+							}
+						</select>
+					</td>
+					<td class="task-type">
+						<select value="${task.type}" disabled>
+							${Object.entries(types).map(([value, type]) =>
+								`<option
+									value="${value}"
+									${value == task.type ? "selected" : ""}
+								>
+									${type}
+								</option>`).join("")
+							}
+						</select>
+
+					</td>
+					<td class="task-category">
+							<select value="${task.category_id}" disabled>
+							${categories.map(category => `
+								<option
+									value="${category.id}"
+									${category.id == task.category_id ? "selected" : ""}
+								>
+									${category.name}
+								</option>
+							`).join("")}
+							</select>
+					</td>
 					<td>
 							<button onclick="editTask(${task.id})">Edit</button>
 							<button onclick="deleteTask(${task.id})">Delete</button>
