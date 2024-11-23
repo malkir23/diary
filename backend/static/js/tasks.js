@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
 					${category.name}
 				</option>
 			`});
+			console.log(categoryOptions);
+
 			const row = document.createElement("tr");
 			row.id = `task-row-${task.id}`;
 			row.innerHTML = `
