@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Add a task row to the table
 	function addTaskToTable(task) {
+		console.log(task);
+
 			const row = document.createElement("tr");
 			row.id = `task-row-${task.id}`;
 			row.innerHTML = `
@@ -23,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					<td class="task-description">${task.description}</td>
 					<td class="task-status">${task.status}</td>
 					<td class="task-type">${task.type}</td>
-					<td class="task-category">${task.category.name}</td>
+					<td class="task-category">${task.category}</td>
 					<td>
 							<button onclick="editTask(${task.id})">Edit</button>
 							<button onclick="deleteTask(${task.id})">Delete</button>
