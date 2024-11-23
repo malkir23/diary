@@ -1,4 +1,5 @@
 from asyncio import tasks
+import json
 from unicodedata import category
 from fastapi import Request, APIRouter, HTTPException
 from typing import List
@@ -48,6 +49,9 @@ async def list_tasks(request: Request):
 
 @router.put("/tasks/{task_id}")
 async def update_task(task_id: int, updated_data: dict):
+    updated_data = json.loads(updated_data)
+    print(updated_data)
+    print(task_id)
     updated = await TASKS.update({"id": task_id}, updated_data)
     if not updated:
         raise HTTPException(status_code=404, detail="Task not found")
