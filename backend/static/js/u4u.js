@@ -63,7 +63,7 @@ function updateTaskStatus(taskId, newStatus) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ status: newStatus })
+        body: JSON.stringify({ 'status': newStatus })
     })
     .then(response => {
         if (!response.ok) {
