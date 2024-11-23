@@ -47,7 +47,7 @@ tables.forEach(table => {
             targetColumn.appendChild(draggedTaskElement);
 
             // Extract the new status from the column's ID
-            const newStatus = targetColumn.id.replace(currentTableId, '');
+            const newStatus = targetColumn.id.replace(`${currentTableId}-`, '').replace('-', '_');
 						console.log(newStatus);
 
             updateTaskStatus(draggedTaskId.split('-')[1], newStatus); // Pass task ID without "task-" prefix
@@ -64,7 +64,8 @@ function updateTaskStatus(taskId, newStatus) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            newStatus: newStatus
+					task_id: taskId,
+					updated_data: { status: newStatus }
         })
     })
     .then(response => {
