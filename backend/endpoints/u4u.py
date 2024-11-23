@@ -52,6 +52,7 @@ async def update_task(task_id: int, updated_data: dict):
     print(updated_data)
     print(task_id)
     updated = await TASKS.update({"id": task_id}, updated_data)
+    print(updated)
     if not updated:
         raise HTTPException(status_code=404, detail="Task not found")
     return {"message": "Task updated successfully"}

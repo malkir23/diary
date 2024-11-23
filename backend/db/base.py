@@ -48,16 +48,24 @@ class DatabaseConnection:
                 .where(*[getattr(base, column) == value for column, value in filters.items()])
             )
 
-            users_to_update = (await session.execute(stmt)).scalars().all()
+            items_to_update = (await session.execute(stmt)).scalars().all()
 
-            for user in users_to_update:
+            if not items_to_update:
+                return False
+
+            for item in items_to_update:
                 for key, value in update_fields.items():
-                    setattr(user, key, value)
+                    setattr(item, key, value)
 
             await session.commit()
-
-            return True
-        return False
+            return (
+                await session.execute(
+                    select(base)
+                    .where(
+                        *[getattr(base, column) == value for column, value in filters.items()]
+                    )
+                )
+            ).scalars().first()
 
     @classmethod
     async def delete(cls, base, filters):
