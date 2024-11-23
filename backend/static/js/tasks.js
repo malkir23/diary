@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			row.id = `task-row-${task.id}`;
 			row.innerHTML = `
 					<td class="task-title"><input type="text" value="${task.title}" disabled></td>
-					<td class="task-description"><textarea value="${task.description}" disabled></textarea></td>
+					<td class="task-description"><textarea disabled>${task.description}</textarea></td>
 					<td class="task-status">
 						<select value="${task.status}" disabled>
 							${Object.entries(statuses).map(([value, status]) =>
