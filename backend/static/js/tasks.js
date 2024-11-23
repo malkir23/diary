@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // Enable editing for a task row
 window.enableEdit = async (taskId) =>{
 	const row = document.querySelector(`#task-row-${taskId}`);
-	const nameInput = row.querySelector(".task-name input");
+	const nameInput = row.querySelector(".task-title input");
 	const descriptionInput = row.querySelector(".task-description input");
 	const statusInput = row.querySelector(".task-status input");
 	const typeInput = row.querySelector(".task-type input");
@@ -87,7 +87,7 @@ window.enableEdit = async (taskId) =>{
 // Save the updated task
 window.saveEdit = async (taskId) => {
 	const row = document.querySelector(`#task-row-${taskId}`);
-	const nameInput = row.querySelector(".task-name input");
+	const nameInput = row.querySelector(".task-title input");
 	const descriptionInput = row.querySelector(".task-description input");
 	const statusInput = row.querySelector(".task-status input");
 	const typeInput = row.querySelector(".task-type input");
@@ -125,7 +125,7 @@ window.saveEdit = async (taskId) => {
 
 			alert("Task updated successfully!");
 
-			row.querySelector(".task-name").textContent = updatedName;
+			row.querySelector(".task-title").textContent = updatedName;
 			row.querySelector(".task-description").textContent = updatedColor;
 			row.querySelector(".task-status").textContent = updatedStatus;
 			row.querySelector(".task-type").textContent = updatedType;
@@ -140,7 +140,7 @@ window.saveEdit = async (taskId) => {
 
 	window.cancelEdit = async (taskId) =>  {
 		const row = document.querySelector(`#task-row-${taskId}`);
-		const nameInput = row.querySelector(".task-name input");
+		const nameInput = row.querySelector(".task-title input");
 		const descriptionInput = row.querySelector(".task-description input");
 		const statusInput = row.querySelector(".task-status input");
 		const typeInput = row.querySelector(".task-type input");
