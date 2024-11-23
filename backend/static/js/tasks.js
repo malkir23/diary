@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	// Add a task row to the table
 	function addTaskToTable(task) {
-		console.log(Object.getOwnPropertyNames( categories));
+		console.log(Object.getOwnPropertyNames( JSON.parse(categories)));
 
 			const row = document.createElement("tr");
 			row.id = `task-row-${task.id}`;
