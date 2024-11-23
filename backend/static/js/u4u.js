@@ -25,6 +25,8 @@ tables.forEach(table => {
     const targetColumn = event.target.closest('.column');
     const draggedTaskId = event.dataTransfer.getData('text/plain');
     const draggedTaskElement = document.getElementById(draggedTaskId);
+		console.log(targetColumn);
+
 
     if (targetColumn && targetColumn.parentNode.parentNode === table) {
       targetColumn.appendChild(draggedTaskElement);
@@ -38,8 +40,8 @@ tables.forEach(table => {
 
 function updateTaskStatus(taskId, newStatus) {
   // Замінити URL на ваш реальний URL сервера
-  fetch('/api/update_task_status', {
-    method: 'POST',
+  fetch(`/api/u4u/tasks/${taskId}`, {
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
     },
