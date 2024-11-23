@@ -160,7 +160,7 @@ window.saveEdit = async (taskId) => {
 			alert("Task updated successfully!");
 
 			row.querySelector(".task-title").textContent = updatedName;
-			row.querySelector(".task-description").textContent = updatedColor;
+			row.querySelector(".task-description").textContent = updatedDescription;
 			row.querySelector(".task-status").textContent = updatedStatus;
 			row.querySelector(".task-type").textContent = updatedType;
 			row.querySelector(".task-category").textContent = updatedCategory;
