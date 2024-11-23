@@ -1,67 +1,60 @@
-document.addEventListener("DOMContentLoaded", () => {
-	const taskLists = document.querySelectorAll(".task-list");
+// u4u.js
 
-	let draggedTask = null;
+document.addEventListener('DOMContentLoaded', () => {
+  const tables = document.querySelectorAll('.table');
 
-	taskLists.forEach((list) => {
-			list.addEventListener("dragstart", (event) => {
-					draggedTask = event.target;
-					event.dataTransfer.effectAllowed = "move";
-			});
+  // Drag and Drop Functionality
+  tables.forEach(table => {
+    table.addEventListener('dragover', (event) => {
+      event.preventDefault();
+    });
 
-			list.addEventListener("dragover", (event) => {
-					event.preventDefault(); // Allow drop
-					event.dataTransfer.dropEffect = "move";
-			});
+    table.addEventListener('drop', (event) => {
+      event.preventDefault();
+      const targetColumn = event.target.closest('.column');
+      const draggedTask = event.dataTransfer.getData('text/plain');
+      const draggedTaskElement = document.getElementById(draggedTask);
 
-			list.addEventListener("drop", async (event) => {
-					event.preventDefault();
+      if (targetColumn) {
+        targetColumn.appendChild(draggedTaskElement);
 
-					const targetList = event.currentTarget;
+        // Update database here (using AJAX or Fetch API)
+        const taskId = draggedTaskElement.dataset.taskId;
+        const newStatus = targetColumn.id.split('-')[1];
+        const newParentId = targetColumn.parentNode.parentNode.id;
 
-					// Ensure the task is dropped within the same table
-					if (draggedTask && draggedTask.parentNode !== targetList) {
-							const sourceTable = draggedTask.closest(".table");
-							const targetTable = targetList.closest(".table");
+        fetch(`/api/u4u/tasks/${taskId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            taskId: taskId,
+            newStatus: newStatus,
+            newParentId: newParentId
+          })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Task updated successfully:', data);
+          // Handle success or error messages as needed
+        })
+        .catch(error => {
+          console.error('Error updating task:', error);
+          // Handle errors gracefully, e.g., display error message to user
+        });
+      }
+    });
 
-							if (sourceTable.id === targetTable.id) {
-									// Move the task
-									targetList.appendChild(draggedTask);
-
-									// Update task's status in the database
-									const taskId = draggedTask.dataset.taskId;
-									const newStatus = targetList.dataset.status;
-
-									try {
-											await updateTaskStatus(taskId, newStatus);
-											alert(`Task status updated to: ${newStatus}`);
-									} catch (error) {
-											console.error("Error updating task status:", error);
-											alert("Failed to update task status.");
-									}
-							} else {
-									alert("Tasks can only be moved within the same table.");
-							}
-					}
-
-					draggedTask = null;
-			});
-	});
+    table.querySelectorAll('.task').forEach(task => {
+      task.addEventListener('dragstart', (event) => {
+        event.dataTransfer.setData('text/plain', task.id);
+      });
+    });
+  });
 });
-
-// Update task status in the database
-async function updateTaskStatus(taskId, newStatus) {
-	const response = await fetch(`/api/u4u/tasks/${taskId}`, {
-			method: "PUT",
-			headers: {
-					"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ status: newStatus }),
-	});
-
-	if (!response.ok) {
-			throw new Error(`Failed to update task status: ${response.status}`);
-	}
-
-	return response.json();
-}
