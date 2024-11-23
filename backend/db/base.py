@@ -42,13 +42,12 @@ class DatabaseConnection:
 
     @classmethod
     async def update(cls, base, filters, update_fields):
+        print(filters, update_fields)
         async with AsyncSession(cls._instance.engine) as session:
             stmt = (
                 select(base)
                 .where(*[getattr(base, column) == value for column, value in filters.items()])
             )
-
-            print(stmt)
 
             items_to_update = (await session.execute(stmt)).scalars().all()
 
