@@ -10,12 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	// Add a task row to the table
 	function addTaskToTable(task) {
-			console.log(task.category_id);
-
-			const categoryOptions = JSON.parse(categories).forEach(category => {
-				console.log(category);
-
-
+		const categoryOptions = JSON.parse(categories).map(category => {
+				return `
+				<option
+					value="${category.id}"
+					${category.id === task.category_id ? "selected" : ""}
+				>
+					${category.name}
+				</option>
+				`;
 			});
 			console.log(categoryOptions);
 
