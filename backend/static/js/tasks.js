@@ -159,11 +159,11 @@ window.saveEdit = async (taskId) => {
 
 			alert("Task updated successfully!");
 
-			row.querySelector(".task-title").textContent = updatedName;
-			row.querySelector(".task-description").textContent = updatedDescription;
-			row.querySelector(".task-status").textContent = updatedStatus;
-			row.querySelector(".task-type").textContent = updatedType;
-			row.querySelector(".task-category").textContent = updatedCategory;
+			row.querySelector(".task-title input").value = updatedName;
+			row.querySelector(".task-description input").value = updatedDescription;
+			row.querySelector(".task-status select").value = updatedStatus;
+			row.querySelector(".task-type select").value = updatedType;
+			row.querySelector(".task-category select").value = updatedCategory;
 
 			resetRow(row);
 	} catch (error) {
