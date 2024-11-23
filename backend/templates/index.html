@@ -25,7 +25,7 @@
                 <div class="column">
                     <h3>Заплановано</h3>
                     <ul class="task-list" data-status="todo">
-                        {% for task in tasks.pre_flight.todo %}
+                        {% for task in tasks.pre_flight if task.status == 'todo'  %}
                         <li draggable="true" class="task" data-task-id="{{ task.id }}" style="background-color: {{ categories[task.category_id].color }};">{{ task.title }}</li>
                         {% endfor %}
                     </ul>
@@ -33,7 +33,7 @@
                 <div class="column">
                     <h3>У процесі</h3>
                     <ul class="task-list" data-status="in_progress">
-                        {% for task in tasks.pre_flight.in_progress %}
+                        {% for task in tasks.pre_flight if task.status == 'in_progress' %}
                         <li draggable="true" class="task" data-task-id="{{ task.id }}" style="background-color: {{ categories[task.category_id].color }};">{{ task.title }}</li>
                         {% endfor %}
                     </ul>
@@ -41,7 +41,7 @@
                 <div class="column">
                     <h3>Зроблено</h3>
                     <ul class="task-list" data-status="done">
-                        {% for task in tasks.pre_flight.done %}
+                        {%  for task in tasks.pre_flight if task.status == 'done' %}
                         <li draggable="true" class="task" data-task-id="{{ task.id }}" style="background-color: {{ categories[task.category_id].color }};">{{ task.title }}</li>
                         {% endfor %}
                     </ul>
