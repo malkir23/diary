@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					<td class="task-description"><textarea disabled>${task.description}</textarea></td>
 					<td class="task-status">
 						<select value="${task.status}" disabled>
-							${Object.entries(statuses).map(([value, status]) =>
+							${Object.entries(JSON.parse(statuses)).map(([value, status]) =>
 								`<option
 									value="${value}"
 									${value == task.status ? "selected" : ""}
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					</td>
 					<td class="task-type">
 						<select value="${task.type}" disabled>
-							${Object.entries(types).map(([value, type]) =>
+							${Object.entries(JSON.parse(types)).map(([value, type]) =>
 								`<option
 									value="${value}"
 									${value == task.type ? "selected" : ""}
