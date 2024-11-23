@@ -71,7 +71,7 @@
 									<td class="task-type">{{ task.type }}</td>
 									<td class="task-category">{{ task.category }}</td>
 									<td>
-										<button onclick="editTask({{ task.id }})">Edit</button>
+										<button onclick="enableEdit({{ task.id }})">Edit</button>
 										<button class="save-button" onclick="saveEdit({{ task.id }})" style="display: none;">Save</button>
 										<button class="cancel-button" onclick="cancelEdit({{ task.id }})" style="display: none;">Cancel</button>
 										<button onclick="deleteTask({{ task.id }})">Delete</button>
