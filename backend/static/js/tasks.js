@@ -4,6 +4,14 @@ document.addEventListener("DOMContentLoaded", () => {
 	const taskTableBody = document.querySelector("#tasks-table tbody");
 
 	function resetRow(row) {
+
+		// Make cells editable
+		nameInput.disabled = true;
+		descriptionInput.disabled = true;
+		statusInput.disabled = true;
+		typeInput.disabled = true;
+		categoryInput.disabled = true;
+
 		row.children[5].children[0].style.display = "inline-block";
 		row.children[5].children[1].style.display = "none";
 		row.children[5].children[2].style.display = "none";
