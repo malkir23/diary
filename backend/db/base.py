@@ -48,6 +48,8 @@ class DatabaseConnection:
                 .where(*[getattr(base, column) == value for column, value in filters.items()])
             )
 
+            print(stmt)
+
             items_to_update = (await session.execute(stmt)).scalars().all()
 
             if not items_to_update:
