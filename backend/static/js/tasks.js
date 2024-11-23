@@ -12,14 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	function addTaskToTable(task) {
 		console.log(categories);
 		console.log(typeof categories);
-
-
-		const validJsonString = categories
-    .replace(/'/g, '"')
-    .replace(/([{,])\s*"?(\w+)"?\s*:/g, '$1"$2":');
-
-			// Parse the JSON string into a JavaScript object
-			const dataCategories = JSON.parse(validJsonString);
 			const row = document.createElement("tr");
 			row.id = `task-row-${task.id}`;
 			row.innerHTML = `
@@ -52,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					</td>
 					<td class="task-category">
 							<select value="${task.category_id}" disabled>
-							${dataCategories.forEach(category => `
+							${JSON.parse(categories).forEach(category => `
 								<option
 										value="${category.id}"
 										${category.id === task.category_id ? "selected" : ""}
