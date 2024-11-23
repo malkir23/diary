@@ -3,7 +3,9 @@ const tables = document.querySelectorAll('.table');
 
 tasks.forEach(task => {
     task.addEventListener('dragstart', (event) => {
-        event.dataTransfer.setData('text/plain', task.new_place);
+				// save id of task
+        event.dataTransfer.setData('text/plain', task.id);
+				task.attributes['old-id'].value = task.id;
     });
 });
 
@@ -21,9 +23,8 @@ tables.forEach(table => {
     table.addEventListener('drop', (event) => {
         event.preventDefault();
 
-        const newPlace = event.dataTransfer.getData('text/plain');
-        const draggedTaskElement = document.getElementsByName(newPlace)[0];
-				const draggedTaskId = draggedTaskElement.id;
+        const draggedTaskId = event.dataTransfer.getData('text/plain');
+        const draggedTaskElement = document.getElementById(draggedTaskId);
         if (!draggedTaskElement) {
             console.error("Dragged task element not found");
             return;
@@ -34,7 +35,7 @@ tables.forEach(table => {
             console.error("Target column not found");
             return;
         }
-				console.log(draggedTaskId);
+				console.log(draggedTaskElement);
 
 				console.log(targetColumn);
 				console.log(table);
@@ -48,7 +49,7 @@ tables.forEach(table => {
             const newStatus = targetColumn.id.split('-')[1];
 						console.log(newStatus);
 
-            updateTaskStatus(newPlace.split('-')[1], newStatus); // Pass task ID without "task-" prefix
+            updateTaskStatus(draggedTaskId.split('-')[1], newStatus); // Pass task ID without "task-" prefix
         }
     });
 });
