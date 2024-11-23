@@ -1,4 +1,5 @@
 const tasksUrl = "/api/u4u/tasks";
+const categories = "[{'color': '#79247b', 'name': 'test 2', 'id': 37}, {'color': '#c8adcc', 'name': 'Small-Talk', 'id': 39}, {'color': '#0022ff', 'name': 'Small-Talk', 'id': 41}, {'color': '#b511c0', 'name': 'false', 'id': 42}, {'color': '#49749c', 'name': 'Konstantin_p3o', 'id': 177}, {'color': '#4c1515', 'name': 'fal8', 'id': 179}, {'color': '#000000', 'name': 'fal8', 'id': 181}]"
 document.addEventListener("DOMContentLoaded", () => {
 	const taskForm = document.getElementById("task-form");
 	const taskTableBody = document.querySelector("#tasks-table tbody");
