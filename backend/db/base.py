@@ -58,7 +58,7 @@ class DatabaseConnection:
                     setattr(item, key, value)
 
             await session.commit()
-            return items_to_update.__dict__
+            return [items.__dict__ for items in items_to_update]
 
     @classmethod
     async def delete(cls, base, filters):
