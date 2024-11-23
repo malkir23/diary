@@ -3,7 +3,7 @@ const tables = document.querySelectorAll('.table');
 
 tasks.forEach(task => {
     task.addEventListener('dragstart', (event) => {
-        event.dataTransfer.setData('text/plain', task.new-place);
+        event.dataTransfer.setData('text/plain', task.new_place);
     });
 });
 
