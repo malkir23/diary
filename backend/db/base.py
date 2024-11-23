@@ -58,14 +58,7 @@ class DatabaseConnection:
                     setattr(item, key, value)
 
             await session.commit()
-            return (
-                await session.execute(
-                    select(base)
-                    .where(
-                        *[getattr(base, column) == value for column, value in filters.items()]
-                    )
-                )
-            ).scalars().first()
+            return items_to_update
 
     @classmethod
     async def delete(cls, base, filters):
