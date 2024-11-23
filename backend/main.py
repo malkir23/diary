@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, Request
+from fastapi import FastAPI, Depends, Request, HTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from .settings.config import CookieSettings
@@ -29,6 +29,18 @@ backend.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# Список заблокованих IP
+BLOCKED_IPS = {"78.153.140.224"}
+
+@backend.middleware("http")
+async def block_ips_middleware(request: Request, call_next):
+    client_ip = request.client.host
+    if client_ip in BLOCKED_IPS:
+        raise HTTPException(status_code=403, detail="Access denied")
+    return await call_next(request)
+
 
 backend.mount("/static", StaticFiles(directory="backend/static"), name="static")
 

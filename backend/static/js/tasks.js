@@ -10,6 +10,14 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	// Add a task row to the table
 	function addTaskToTable(task) {
+			const categoryOptions = JSON.parse(categories).forEach(category => {`
+				<option
+					value="${category.id}"
+					${category.id === task.category_id ? "selected" : ""}
+				>
+					${category.name}
+				</option>
+			`});
 			const row = document.createElement("tr");
 			row.id = `task-row-${task.id}`;
 			row.innerHTML = `
@@ -42,14 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					</td>
 					<td class="task-category">
 							<select value="${task.category_id}" disabled>
-							${JSON.parse(categories).forEach(category => {`
-								<option
-										value="${category.id}"
-										${category.id === task.category_id ? "selected" : ""}
-								>
-										${category.name}
-								</option>
-							`})}
+								${categoryOptions}
 							</select>
 					</td>
 					<td>

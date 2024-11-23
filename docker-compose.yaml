@@ -29,7 +29,7 @@ services:
       POSTGRES_USER: "diary_admin"
       POSTGRES_PASSWORD: "pgpwd4habr"
     ports:
-      - 5000:5432
+      - 5001:5432
 
 volumes:
   postgres:
