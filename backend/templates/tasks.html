@@ -59,7 +59,21 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Dynamically populated rows -->
+								{% for type, tasks in tasks.items() %}
+										{% for task in tasks %}
+												<tr id="task-row-{{ task.id }}">
+														<td class="task-title">{{ task.title }}</td>
+														<td class="task-description">{{ task.description }}</td>
+														<td class="task-status">{{ task.status }}</td>
+														<td class="task-type">{{ task.type }}</td>
+														<td class="task-category">{{ task.category }}</td>
+														<td>
+																<button onclick="editTask({{ task.id }})">Edit</button>
+																<button onclick="deleteTask({{ task.id }})">Delete</button>
+														</td>
+												</tr>
+										{% endfor %}
+								{% endfor %}
             </tbody>
         </table>
     </div>
