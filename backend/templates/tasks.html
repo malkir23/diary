@@ -13,22 +13,33 @@
     <div id="task-form-container">
         <h2>Create a New Task</h2>
         <form id="task-form">
-            <label for="task-name">Name:</label>
-            <input type="text" id="task-name" name="name" required>
+            <label for="task-title">Title:</label>
+            <input type="text" id="task-title" name="title" required>
 
-            <label for="task-type">Type:</label>
-            <select id="task-type" name="type">
+            <label for="task-description">Description:</label>
+            <input type="text" id="task-description" name="description" required>
+
+            <label for="task-status">Status:</label>
+            <select id="task-status" name="status">
                 <option value="todo">Todo</option>
-                <option value="in-progress">In Progress</option>
+                <option value="in_progress">In Progress</option>
                 <option value="done">Done</option>
             </select>
 
+            <label for="task-type">Type:</label>
+            <select id="task-type" name="type">
+                <option value="pre_flight">Pre-Flight</option>
+                <option value="in_flight">In-Flight</option>
+                <option value="post_flight">Post-Flight</option>
+            </select>
+
             <label for="task-category">Category:</label>
-						<select id="task-category" name="category" required>
+            <select id="task-category" name="category_id" required>
             	{% for category in categories %}
 								<option value="{{ category.id }}">{{ category.name }}</option>
 							{% endfor %}
 						</select>
+
             <button type="submit">Create Task</button>
         </form>
     </div>
@@ -39,7 +50,9 @@
         <table id="tasks-table">
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Status</th>
                     <th>Type</th>
                     <th>Category</th>
                     <th>Actions</th>

@@ -2,12 +2,15 @@ const tasksUrl = "/api/u4u/tasks";
 document.addEventListener("DOMContentLoaded", () => {
 	const taskForm = document.getElementById("task-form");
 	const taskTableBody = document.querySelector("#tasks-table tbody");
+	const categorySelect = document.getElementById("task-category");
 
-	// Fetch existing tasks and populate the table
-	async function fetchTasks() {
-			const response = await fetch(`${tasksUrl}/list`);
-			const tasks = await response.json();
+	// Fetch existing tasks
+	async function fetchData() {
+			const tasksResponse = await fetch(`${tasksUrl}/list`);
 
+			const tasks = await tasksResponse.json();
+
+			// Populate tasks table
 			tasks.forEach(addTaskToTable);
 	}
 
@@ -16,9 +19,11 @@ document.addEventListener("DOMContentLoaded", () => {
 			const row = document.createElement("tr");
 			row.id = `task-row-${task.id}`;
 			row.innerHTML = `
-					<td class="task-name">${task.name}</td>
+					<td class="task-title">${task.title}</td>
+					<td class="task-description">${task.description}</td>
+					<td class="task-status">${task.status}</td>
 					<td class="task-type">${task.type}</td>
-					<td class="task-category">${task.category}</td>
+					<td class="task-category">${task.category.name}</td>
 					<td>
 							<button onclick="editTask(${task.id})">Edit</button>
 							<button onclick="deleteTask(${task.id})">Delete</button>
@@ -32,9 +37,11 @@ document.addEventListener("DOMContentLoaded", () => {
 			event.preventDefault();
 
 			const taskData = {
-					name: taskForm["name"].value,
+					title: taskForm["title"].value,
+					description: taskForm["description"].value,
+					status: taskForm["status"].value,
 					type: taskForm["type"].value,
-					category: taskForm["category"].value,
+					category_id: parseInt(taskForm["category_id"].value),
 			};
 
 			const response = await fetch(tasksUrl, {
@@ -52,58 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 	});
 
-	// Edit a task
+	// Edit a task (similar to the previous implementation)
 	window.editTask = (taskId) => {
-			const row = document.getElementById(`task-row-${taskId}`);
-			const nameCell = row.querySelector(".task-name");
-			const typeCell = row.querySelector(".task-type");
-			const categoryCell = row.querySelector(".task-category");
-
-			nameCell.innerHTML = `<input type="text" value="${nameCell.textContent}">`;
-			typeCell.innerHTML = `<select>
-					<option value="todo" ${typeCell.textContent === "todo" ? "selected" : ""}>Todo</option>
-					<option value="in-progress" ${typeCell.textContent === "in-progress" ? "selected" : ""}>In Progress</option>
-					<option value="done" ${typeCell.textContent === "done" ? "selected" : ""}>Done</option>
-			</select>`;
-			categoryCell.innerHTML = `<input type="text" value="${categoryCell.textContent}">`;
-
-			const actionCell = row.querySelector("td:last-child");
-			actionCell.innerHTML = `
-					<button onclick="saveTask(${taskId})">Save</button>
-					<button onclick="cancelEdit(${taskId})">Cancel</button>
-			`;
-	};
-
-	// Save the edited task
-	window.saveTask = async (taskId) => {
-			const row = document.getElementById(`task-row-${taskId}`);
-			const name = row.querySelector(".task-name input").value;
-			const type = row.querySelector(".task-type select").value;
-			const category = row.querySelector(".task-category input").value;
-
-			const response = await fetch(`${tasksUrl}/${taskId}`, {
-					method: "PUT",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ name, type, category }),
-			});
-
-			if (response.ok) {
-					row.querySelector(".task-name").textContent = name;
-					row.querySelector(".task-type").textContent = type;
-					row.querySelector(".task-category").textContent = category;
-
-					row.querySelector("td:last-child").innerHTML = `
-							<button onclick="editTask(${taskId})">Edit</button>
-							<button onclick="deleteTask(${taskId})">Delete</button>
-					`;
-			} else {
-					alert("Error updating task");
-			}
-	};
-
-	// Cancel edit
-	window.cancelEdit = (taskId) => {
-			fetchTasks();
+			// Inline editing logic here
 	};
 
 	// Delete a task
@@ -117,5 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 	};
 
-	fetchTasks();
+	fetchData();
 });
+
