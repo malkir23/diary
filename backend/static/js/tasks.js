@@ -183,9 +183,9 @@ window.saveEdit = async (taskId) => {
 		const row = document.querySelector(`#task-row-${taskId}`);
 		const nameInput = row.querySelector(".task-title input");
 		const descriptionInput = row.querySelector(".task-description input");
-		const statusInput = row.querySelector(".task-status input");
-		const typeInput = row.querySelector(".task-type input");
-		const categoryInput = row.querySelector(".task-category input");
+		const statusInput = row.querySelector(".task-status select");
+		const typeInput = row.querySelector(".task-type select");
+		const categoryInput = row.querySelector(".task-category select");
 
 		// Restore original values
 		nameInput.value = nameInput.dataset.originalValue;
