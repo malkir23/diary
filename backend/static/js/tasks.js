@@ -3,6 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	const taskForm = document.getElementById("task-form");
 	const taskTableBody = document.querySelector("#tasks-table tbody");
 
+	function resetRow(row) {
+		row.children[2].children[0].style.display = "inline-block";
+		row.children[2].children[1].style.display = "none";
+		row.children[2].children[2].style.display = "none";
+	}
 	// Add a task row to the table
 	function addTaskToTable(task) {
 
@@ -52,16 +57,25 @@ document.addEventListener("DOMContentLoaded", () => {
 // Enable editing for a task row
 window.enableEdit = async (taskId) =>{
 	const row = document.querySelector(`#task-row-${taskId}`);
-	const nameCell = row.querySelector(".task-name");
-	const colorCell = row.querySelector(".task-color");
+	const nameInput = row.querySelector(".task-name input");
+	const descriptionInput = row.querySelector(".task-description input");
+	const statusInput = row.querySelector(".task-status input");
+	const typeInput = row.querySelector(".task-type input");
+	const categoryInput = row.querySelector(".task-category input");
 
 	// Store the current values in data attributes in case of cancel
-	nameCell.dataset.originalValue = nameCell.textContent.trim();
-	colorCell.dataset.originalValue = colorCell.textContent.trim();
+	nameInput.dataset.originalValue = nameInput.value;
+	descriptionInput.dataset.originalValue = descriptionInput.value;
+	statusInput.dataset.originalValue = statusInput.value;
+	typeInput.dataset.originalValue = typeInput.value;
+	categoryInput.dataset.originalValue = categoryInput.value;
 
 	// Make cells editable
-	nameCell.innerHTML = `<input type="text" value="${nameCell.textContent.trim()}" class="edit-input" />`;
-	colorCell.firstChild.disabled = false;
+	nameInput.disabled = false;
+	descriptionInput.disabled = false;
+	statusInput.disabled = false;
+	typeInput.disabled = false;
+	categoryInput.disabled = false;
 
 	// Show save and cancel buttons, hide edit button
 
@@ -123,6 +137,24 @@ window.saveEdit = async (taskId) => {
 			alert("An error occurred while updating the task.");
 	}
 }
+
+	window.cancelEdit = async (taskId) =>  {
+		const row = document.querySelector(`#task-row-${taskId}`);
+		const nameInput = row.querySelector(".task-name input");
+		const descriptionInput = row.querySelector(".task-description input");
+		const statusInput = row.querySelector(".task-status input");
+		const typeInput = row.querySelector(".task-type input");
+		const categoryInput = row.querySelector(".task-category input");
+
+		// Restore original values
+		nameInput.value = nameInput.dataset.originalValue;
+		descriptionInput.value = descriptionInput.dataset.originalValue;
+		statusInput.value = statusInput.dataset.originalValue;
+		typeInput.value = typeInput.dataset.originalValue;
+		categoryInput.value = categoryInput.dataset.originalValue;
+
+		resetRow(row);
+	}
 
 	// Delete a task
 	window.deleteTask = async (taskId) => {
