@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			row.id = `task-row-${task.id}`;
 			row.innerHTML = `
 					<td class="task-title"><input type="text" value="${task.title}" disabled></td>
-					<td class="task-description"><input type="text" value="${task.description}" disabled></td>
+					<td class="task-description"><textarea value="${task.description}" disabled></textarea></td>
 					<td class="task-status">
 						<select value="${task.status}" disabled>
 							${Object.entries(statuses).map(([value, status]) =>
@@ -54,7 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
 							</select>
 					</td>
 					<td>
-							<button onclick="editTask(${task.id})">Edit</button>
+							<button onclick="enableEdit(${task.id})">Edit</button>
+							<button class="save-button" onclick="saveEdit(${task.id})" style="display: none;">Save</button>
+							<button class="cancel-button" onclick="cancelEdit(${task.id})" style="display: none;">Cancel</button>
 							<button onclick="deleteTask(${task.id})">Delete</button>
 					</td>
 			`;
@@ -92,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
 window.enableEdit = async (taskId) =>{
 	const row = document.querySelector(`#task-row-${taskId}`);
 	const nameInput = row.querySelector(".task-title input");
-	const descriptionInput = row.querySelector(".task-description input");
+	const descriptionInput = row.querySelector(".task-description textarea");
 	const statusInput = row.querySelector(".task-status select");
 	const typeInput = row.querySelector(".task-type select");
 	const categoryInput = row.querySelector(".task-category select");
@@ -122,7 +124,7 @@ window.enableEdit = async (taskId) =>{
 window.saveEdit = async (taskId) => {
 	const row = document.querySelector(`#task-row-${taskId}`);
 	const nameInput = row.querySelector(".task-title input");
-	const descriptionInput = row.querySelector(".task-description input");
+	const descriptionInput = row.querySelector(".task-description textarea");
 	const statusInput = row.querySelector(".task-status select");
 	const typeInput = row.querySelector(".task-type select");
 	const categoryInput = row.querySelector(".task-category select");
@@ -182,7 +184,7 @@ window.saveEdit = async (taskId) => {
 	window.cancelEdit = async (taskId) =>  {
 		const row = document.querySelector(`#task-row-${taskId}`);
 		const nameInput = row.querySelector(".task-title input");
-		const descriptionInput = row.querySelector(".task-description input");
+		const descriptionInput = row.querySelector(".task-description textarea");
 		const statusInput = row.querySelector(".task-status select");
 		const typeInput = row.querySelector(".task-type select");
 		const categoryInput = row.querySelector(".task-category select");
