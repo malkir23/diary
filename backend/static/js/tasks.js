@@ -10,7 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	// Add a task row to the table
 	function addTaskToTable(task) {
-		const validJsonString = categories.replace(/"/g, "'");
+		const validJsonString = categories
+    .replace(/'/g, '"')
+    .replace(/([{,])\s*"?(\w+)"?\s*:/g, '$1"$2":');
 
 			// Parse the JSON string into a JavaScript object
 			const dataCategories = JSON.parse(validJsonString);
