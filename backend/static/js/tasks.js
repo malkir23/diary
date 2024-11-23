@@ -134,7 +134,5 @@ async function saveEdit(taskId) {
 					alert("Error deleting task");
 			}
 	};
-
-	fetchData();
 });
 
