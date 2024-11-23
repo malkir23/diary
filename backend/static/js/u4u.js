@@ -36,19 +36,12 @@ tables.forEach(table => {
             console.error("Target column not found");
             return;
         }
-				console.log(draggedTaskElement);
-
-				console.log(targetColumn);
-				console.log(table);
-
-
 
         if (currentTableId === tableId) {
             targetColumn.appendChild(draggedTaskElement);
 
             // Extract the new status from the column's ID
             const newStatus = targetColumn.id.replace(`${currentTableId}-`, '').replace('-', '_');
-						console.log(newStatus);
 
             updateTaskStatus(draggedTaskId.split('-')[1], newStatus); // Pass task ID without "task-" prefix
         }
@@ -56,7 +49,6 @@ tables.forEach(table => {
 });
 
 function updateTaskStatus(taskId, newStatus) {
-	console.log(taskId, newStatus);
 
     fetch(`/api/u4u/tasks/${taskId}`, {
         method: 'PUT',
