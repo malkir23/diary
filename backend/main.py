@@ -32,7 +32,7 @@ backend.add_middleware(
 
 
 # Список заблокованих IP
-BLOCKED_IPS = {"78.153.140.224"}
+BLOCKED_IPS = {"78.153.140.224", "195.178.110.57"}
 
 @backend.middleware("http")
 async def block_ips_middleware(request: Request, call_next):
