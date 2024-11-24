@@ -119,3 +119,12 @@ h1, h2 {
 			width: 100%; /* Full width for each column */
 	}
 }
+
+.dragging {
+  opacity: 0.5;
+}
+
+.column.highlight {
+  background-color: #f0e68c;
+  border: 2px dashed #8b4513;
+}
