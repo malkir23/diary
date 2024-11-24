@@ -7,98 +7,173 @@
     <link rel="stylesheet" href="/static/css/u4u.css">
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <h1>Flight Management</h1>
-            <nav class="navigation">
-                <button onclick="location.href='/api/u4u/categories/list'" class="nav-button">Категорії</button>
-                <button onclick="location.href='/api/u4u/tasks/list'" class="nav-button">Задачи</button>
-            </nav>
-        </div>
-    </header>
+    <h1>Flight Management</h1>
 
-    <main>
-        <section class="stages-section">
-            <h1 class="section-title">Етапи польоту</h1>
-            <div class="stages-container">
-                <!-- Pre-Flight Stage -->
-                <div class="stage">
-                    <h2 class="stage-title">Перед Вилітом</h2>
-                    <div class="stage-columns">
-                        <div class="column" id="pre-flight-todo">
-                            <h3>Заплановано</h3>
-                            <ul class="task-list">
-                                {% for task in tasks.pre_flight if task.status == 'todo' %}
-                                <li id="task-{{ task.id }}" class="task" draggable="true" style="background-color: {{ categories[task.category_id].color }};">
-                                    {{ task.title }}
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="column" id="pre-flight-in-progress">
-                            <h3>У процесі</h3>
-                            <ul class="task-list">
-                                {% for task in tasks.pre_flight if task.status == 'in_progress' %}
-                                <li id="task-{{ task.id }}" class="task" draggable="true" style="background-color: {{ categories[task.category_id].color }};">
-                                    {{ task.title }}
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="column" id="pre-flight-done">
-                            <h3>Зроблено</h3>
-                            <ul class="task-list">
-                                {% for task in tasks.pre_flight if task.status == 'done' %}
-                                <li id="task-{{ task.id }}" class="task" draggable="true" style="background-color: {{ categories[task.category_id].color }};">
-                                    {{ task.title }}
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
+    <!-- Navigation -->
+    <div class="navigation">
+        <button onclick="location.href='/api/u4u/categories/list'" class="nav-button">Категорії</button>
+        <button onclick="location.href='/api/u4u/tasks/list'" class="nav-button">Задачи</button>
+    </div>
+
+    <h1>Етапи польоту</h1>
+
+    <div class="table-container">
+        <!-- Pre-Flight Table -->
+        <div class="table" id="pre-flight">
+            <h2>Перед Вилітом</h2>
+            <div class="columns">
+                <div class="column" id="pre-flight-todo">
+                    <h3>Заплановано</h3>
+                    <ul class="task-list">
+                        {% for task in tasks.pre_flight if task.status == 'todo' %}
+                            <li
+                                id="task-{{ task.id }}"
+                                draggable="true"
+                                class="task"
+                                style="background-color: {{ categories[task.category_id].color }};"
+                            >
+                                {{ task.title }}
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
-
-                <!-- Repeat for other stages: In-Flight and Post-Flight -->
-                <div class="stage">
-                    <h2 class="stage-title">Політ</h2>
-                    <div class="stage-columns">
-                        <div class="column" id="in-flight-todo">
-                            <h3>Заплановано</h3>
-                            <ul class="task-list">
-                                {% for task in tasks.in_flight if task.status == 'todo' %}
-                                <li id="task-{{ task.id }}" class="task" draggable="true" style="background-color: {{ categories[task.category_id].color }};">
-                                    {{ task.title }}
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="column" id="in-flight-in-progress">
-                            <h3>У процесі</h3>
-                            <ul class="task-list">
-                                {% for task in tasks.in_flight if task.status == 'in_progress' %}
-                                <li id="task-{{ task.id }}" class="task" draggable="true" style="background-color: {{ categories[task.category_id].color }};">
-                                    {{ task.title }}
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="column" id="in-flight-done">
-                            <h3>Зроблено</h3>
-                            <ul class="task-list">
-                                {% for task in tasks.in_flight if task.status == 'done' %}
-                                <li id="task-{{ task.id }}" class="task" draggable="true" style="background-color: {{ categories[task.category_id].color }};">
-                                    {{ task.title }}
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
+                <div class="column" id="pre-flight-in-progress">
+                    <h3>У процесі</h3>
+                    <ul class="task-list">
+                        {% for task in tasks.pre_flight if task.status == 'in_progress' %}
+                            <li
+                                id="task-{{ task.id }}"
+                                draggable="true"
+                                class="task"
+                                style="background-color: {{ categories[task.category_id].color }};"
+                            >
+                                {{ task.title }}
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
-
-                <!-- Add the Post-Flight stage -->
+                <div class="column" id="pre-flight-done">
+                    <h3>Зроблено</h3>
+                    <ul class="task-list">
+                        {% for task in tasks.pre_flight if task.status == 'done' %}
+                            <li
+                                id="task-{{ task.id }}"
+                                draggable="true"
+                                class="task"
+                                style="background-color: {{ categories[task.category_id].color }};"
+                            >
+                                {{ task.title }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-        </section>
-    </main>
+        </div>
+
+        <!-- In-Flight Table -->
+        <div class="table" id="in-flight">
+            <h2>Політ</h2>
+            <div class="columns">
+                <div class="column" id="in-flight-todo">
+                    <h3>Заплановано</h3>
+                    <ul class="task-list">
+                        {% for task in tasks.in_flight if task.status == 'todo' %}
+                            <li
+                                id="task-{{ task.id }}"
+                                draggable="true"
+                                class="task"
+                                style="background-color: {{ categories[task.category_id].color }};"
+                            >
+                                {{ task.title }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column" id="in-flight-in-progress">
+                    <h3>У процесі</h3>
+                    <ul class="task-list">
+                        {% for task in tasks.in_flight if task.status == 'in_progress' %}
+                            <li
+                                id="task-{{ task.id }}"
+                                draggable="true"
+                                class="task"
+                                style="background-color: {{ categories[task.category_id].color }};"
+                            >
+                                {{ task.title }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column" id="in-flight-done">
+                    <h3>Зроблено</h3>
+                    <ul class="task-list">
+                        {% for task in tasks.in_flight if task.status == 'done' %}
+                            <li
+                                id="task-{{ task.id }}"
+                                draggable="true"
+                                class="task"
+                                style="background-color: {{ categories[task.category_id].color }};"
+                            >
+                                {{ task.title }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post-Flight Table -->
+        <div class="table" id="post-flight">
+            <h2>Після Приліту</h2>
+            <div class="columns">
+                <div class="column" id="post-flight-todo">
+                    <h3>Заплановано</h3>
+                    <ul class="task-list">
+                        {% for task in tasks.post_flight if task.status == 'todo' %}
+                            <li
+                                id="task-{{ task.id }}"
+                                draggable="true"
+                                class="task"
+                                style="background-color: {{ categories[task.category_id].color }};"
+                            >
+                                {{ task.title }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column" id="post-flight-in-progress">
+                    <h3>У процесі</h3>
+                    <ul class="task-list">
+                        {% for task in tasks.post_flight if task.status == 'in_progress' %}
+                            <li
+                                id="task-{{ task.id }}"
+                                draggable="true"
+                                class="task"
+                                style="background-color: {{ categories[task.category_id].color }};"
+                            >
+                                {{ task.title }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column" id="post-flight-done">
+                    <h3>Зроблено</h3>
+                    <ul class="task-list">
+                        {% for task in tasks.post_flight if task.status == 'done' %}
+                            <li
+                                id="task-{{ task.id }}"
+                                draggable="true"
+                                class="task"
+                                style="background-color: {{ categories[task.category_id].color }};"
+                            >
+                                {{ task.title }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="/static/js/u4u.js"></script>
 </body>

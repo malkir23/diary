@@ -1,107 +1,121 @@
-/* Reset */
-body, h1, h2, h3, ul, li {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
+/* u4u.css */
 
+/* Global Styles */
 body {
 	font-family: Arial, sans-serif;
-	background-color: #f4f4f9;
+	background-color: #f5f5f5;
 	color: #333;
+	margin: 0;
 	padding: 20px;
 }
 
-.header {
-	background-color: #007bff;
-	color: white;
-	text-align: center;
-	padding: 20px 0;
+h1, h2 {
+	color: #8b4513; /* Warm brown */
+	margin: 0 0 10px;
 }
 
-.header-content h1 {
-	font-size: 2rem;
-	margin-bottom: 10px;
-}
-
+/* Navigation */
 .navigation {
 	display: flex;
-	justify-content: center;
-	gap: 15px;
+	justify-content: space-between;
+	margin-bottom: 20px;
 }
 
 .nav-button {
-	background-color: #f4f4f9;
-	color: #007bff;
 	padding: 10px 20px;
+	background-color: #f0e68c; /* Warm yellow */
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
-	font-weight: bold;
+	transition: background-color 0.3s ease-in-out;
 }
 
 .nav-button:hover {
-	background-color: #0056b3;
-	color: white;
+	background-color: #d4c772;
 }
 
-.section-title {
-	text-align: center;
-	margin: 20px 0;
-	font-size: 1.8rem;
-	color: #333;
-}
-
-.stages-container {
+/* Table Container */
+.table-container {
 	display: flex;
+	gap: 10px; /* Small spacing between tables */
 	flex-wrap: wrap;
-	justify-content: center;
-	gap: 20px;
+	justify-content: space-between;
 }
 
-.stage {
-	background: white;
-	border: 1px solid #ddd;
-	border-radius: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	padding: 20px;
-	width: 300px;
-	flex: 1;
-	text-align: center;
-}
-
-.stage-title {
-	color: #007bff;
-	margin-bottom: 10px;
-}
-
-.stage-columns {
+.table {
+	flex: 1 1 calc(33.33% - 10px); /* Allow three tables per row with spacing */
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 15px;
+	background-color: #fff;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 10px; /* Spacing between columns inside the table */
+}
+
+/* Columns inside each table */
+.columns {
+	display: flex;
+	gap: 10px; /* Spacing between individual columns */
+	justify-content: space-between;
 }
 
 .column {
-	background-color: #f9f9f9;
+	flex: 1;
 	border: 1px solid #ddd;
-	border-radius: 8px;
+	background-color: #f9f9f9;
+	border-radius: 5px;
 	padding: 10px;
-	text-align: left;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.column h3 {
+	text-align: center;
+	margin-bottom: 10px;
+	font-size: 1.1rem;
+	color: #333;
+}
+
+/* Task list styles */
 .task-list {
 	list-style: none;
+	padding: 0;
+	margin: 0;
 }
 
 .task {
-	background-color: #eee;
-	margin: 5px 0;
 	padding: 10px;
+	margin-bottom: 5px;
 	border-radius: 5px;
+	color: snow;
 	cursor: grab;
-	transition: transform 0.2s;
+	border: 1px solid #b3e5fc;
+	transition: background-color 0.3s ease-in-out;
 }
 
-.task:active {
-	transform: scale(1.05);
+.task:hover {
+	background-color: #81d4fa;
+	transform: scale(1.02);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+	.table-container {
+			flex-direction: column; /* Stack tables vertically */
+			gap: 15px;
+	}
+
+	.table {
+			flex: 1 1 100%; /* Each table takes full width */
+	}
+
+	.columns {
+			flex-direction: column; /* Stack columns vertically */
+			gap: 15px;
+	}
+
+	.column {
+			width: 100%; /* Full width for each column */
+	}
 }
