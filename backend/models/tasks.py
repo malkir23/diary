@@ -22,5 +22,6 @@ class Task(Base):
     status = Column(String, nullable=False)  # "todo", "in_progress", "done"
     type = Column(String, nullable=False)  # "pre_flight", "in_flight", "post_flight"
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
+    result = Column(String, nullable=True)
 
     category = relationship("Category", back_populates="tasks")
