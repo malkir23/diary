@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('task-modal');
   const closeModal = document.getElementById('close-modal');
   const saveTaskButton = document.getElementById('save-task');
+  const cancelTaskButton = document.getElementById('cancel-task');
   const taskForm = document.getElementById('task-form');
 
   const taskElements = document.querySelectorAll('.task');
@@ -82,27 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
       taskDetailsCache[taskId] = task;
       return task;
     })();
-
-
-      // Закриття модального вікна (іконка)
-      closeModal.addEventListener('click', () => {
-        modal.classList.add('hidden');
-    });
-
-    // Закриття модального вікна (кнопка "Закрити")
-    cancelTaskButton.addEventListener('click', () => {
-        modal.classList.add('hidden');
-    });
-
   document.body.addEventListener('click', (event) => {
     const taskId = event.target.closest('.task')?.id.split('-')[1];
     if (taskId && taskElementsMap[taskId]) {
       fetchTaskDetails(taskId).then((task) => {
         modal.dataset.taskId = task.id;
-        console.log(task);
-        console.log(taskForm);
-
-
         Object.assign(taskForm, {
           title: { value: task.title },
           description: { value: task.description },
@@ -112,6 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.remove('hidden');
       });
     }
+  });
+
+  // Закриття модального вікна (кнопка "Закрити")
+  cancelTaskButton.addEventListener('click', () => {
+      modal.classList.add('hidden');
   });
 
   closeModal.addEventListener('click', () => {
