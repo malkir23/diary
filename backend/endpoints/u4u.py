@@ -36,12 +36,12 @@ async def create_task(task: dict):
     return await TASKS.insert(task)
 
 
-@router.get("/tasks/{task_id}")
-async def get_task(task_id: int) -> dict:
-    task = await TASKS.find({'id': task_id})
-    if not task:
-        raise HTTPException(status_code=404, detail="Task not found")
-    return task[0]
+# @router.get("/tasks/{task_id}")
+# async def get_task(task_id: int) -> dict:
+#     task = await TASKS.find({'id': task_id})
+#     if not task:
+#         raise HTTPException(status_code=404, detail="Task not found")
+#     return task[0]
 
 @router.get("/tasks/list", response_class=HTMLResponse)
 async def list_tasks(request: Request):
