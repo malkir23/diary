@@ -88,18 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (taskId && taskElementsMap[taskId]) {
       fetchTaskDetails(taskId).then((task) => {
         modal.dataset.taskId = task.id;
-        const filds = ['title', 'description', 'status', 'result'];
-        for (let index = 0; index < filds.length; index++) {
-          const fieldName = filds[index];
+        const fields = ['title', 'description', 'status', 'result'];
+        for (let index = 0; index < fields.length; index++) {
+          const fieldName = fields[index];
           taskForm.children[fieldName].value = task[fieldName];
 
         }
-        Object.assign(taskForm, {
-          title: { value: task.title },
-          description: { value: task.description },
-          status: { value: task.status },
-          result: { value: task.result },
-        });
         modal.classList.remove('hidden');
       });
     }
