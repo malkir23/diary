@@ -82,6 +82,18 @@ document.addEventListener('DOMContentLoaded', () => {
       taskDetailsCache[taskId] = task;
       return task;
     })();
+
+
+      // Закриття модального вікна (іконка)
+      closeModal.addEventListener('click', () => {
+        modal.classList.add('hidden');
+    });
+
+    // Закриття модального вікна (кнопка "Закрити")
+    cancelTaskButton.addEventListener('click', () => {
+        modal.classList.add('hidden');
+    });
+
   document.body.addEventListener('click', (event) => {
     const taskId = event.target.closest('.task')?.id.split('-')[1];
     if (taskId && taskElementsMap[taskId]) {

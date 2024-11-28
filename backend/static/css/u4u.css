@@ -153,3 +153,37 @@ h1, h2 {
 	font-size: 18px;
 	color: red;
 }
+
+.modal-buttons {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 20px;
+}
+
+.btn-save {
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+	border-radius: 5px;
+	font-size: 14px;
+}
+
+.btn-cancel {
+	background-color: #f44336;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+	border-radius: 5px;
+	font-size: 14px;
+}
+
+.btn-save:hover {
+	background-color: #45a049;
+}
+
+.btn-cancel:hover {
+	background-color: #d32f2f;
+}

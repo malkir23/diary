@@ -185,29 +185,32 @@
 
     <!-- Modal -->
     <div id="task-modal" class="modal hidden">
-      <div class="modal-content">
-        <span class="close-button" id="close-modal">&times;</span>
-        <h2>Редагувати задачу</h2>
-        <form id="task-form">
-          <label for="task-title">Назва:</label>
-          <input type="text" id="task-title" name="title" />
+        <div class="modal-content">
+            <span class="close-button" id="close-modal">&times;</span>
+            <h2>Редагувати задачу</h2>
+            <form id="task-form">
+                <label for="task-title">Назва:</label>
+                <input type="text" id="task-title" name="title">
 
-          <label for="task-description">Опис:</label>
-          <textarea id="task-description" cols="30" rows="10" name="description"></textarea>
+                <label for="task-description">Опис:</label>
+                <textarea id="task-description" cols="30" rows="10" name="description"></textarea>
 
-          <label for="task-result">Результат:</label>
-          <textarea id="task-result" cols="30" rows="10" name="result"></textarea>
+                <label for="task-result">Результат:</label>
+                <textarea id="task-result" cols="30" rows="10" name="result"></textarea>
 
-          <label for="task-status">Статус:</label>
-          <select id="task-status" name="status">
-            <option value="todo">Заплановано</option>
-            <option value="in_progress">У процесі</option>
-            <option value="done">Зроблено</option>
-          </select>
+                <label for="task-status">Статус:</label>
+                <select id="task-status" name="status">
+                    <option value="todo">Заплановано</option>
+                    <option value="in_progress">У процесі</option>
+                    <option value="done">Зроблено</option>
+                </select>
 
-          <button type="button" id="save-task">Зберегти</button>
-        </form>
-      </div>
+                <div class="modal-buttons">
+                    <button type="button" id="save-task" class="btn-save">Зберегти</button>
+                    <button type="button" id="cancel-task" class="btn-cancel">Закрити</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script src="/static/js/u4u.js"></script>
