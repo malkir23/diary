@@ -87,6 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (taskId && taskElementsMap[taskId]) {
       fetchTaskDetails(taskId).then((task) => {
         modal.dataset.taskId = task.id;
+        console.log(task);
+        console.log(taskForm);
+
+
         Object.assign(taskForm, {
           title: { value: task.title },
           description: { value: task.description },
