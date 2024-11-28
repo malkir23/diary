@@ -51,26 +51,12 @@ tables.forEach((table) => {
   });
 });
 
-function updateTaskStatus(taskId, newStatus) {
-  fetch(`${u4uURL}/tasks/${taskId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+async function updateTaskStatus(taskId, newStatus) {
+  await fetch(`${u4uURL}/tasks/${taskId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status: newStatus }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log('Task updated successfully:', data);
-    })
-    .catch((error) => {
-      console.error('Error updating task:', error);
-    });
+  });
 }
 
 
@@ -81,53 +67,68 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveTaskButton = document.getElementById('save-task');
   const taskForm = document.getElementById('task-form');
 
-  document.querySelectorAll('.task').forEach((taskElement) => {
-      taskElement.addEventListener('click', () => {
-          const taskId = taskElement.id.split('-')[1];
+  const taskElements = document.querySelectorAll('.task');
+  const taskElementsMap = {};
+  taskElements.forEach((taskElement) => {
+      taskElementsMap[taskElement.id.split('-')[1]] = taskElement;
+  });
 
-          // Fetch task details from API
-          fetch(`${u4uURL}/tasks/${taskId}`)
-              .then((response) => response.json())
-              .then((task) => {
-                  document.getElementById('task-title').value = task.title;
-                  document.getElementById('task-description').value = task.description;
-                  document.getElementById('task-status').value = task.status;
-                  document.getElementById('task-result').value = task.result;
-                  modal.dataset.taskId = task.id;
-                  modal.classList.remove('hidden');
-              })
-              .catch((error) => console.error('Error fetching task:', error));
+  const taskDetailsCache = {};
+  const fetchTaskDetails = (taskId) =>
+    taskDetailsCache[taskId] ||
+    (async () => {
+      const response = await fetch(`${u4uURL}/tasks/${taskId}`);
+      const task = await response.json();
+      taskDetailsCache[taskId] = task;
+      return task;
+    })();
+  document.body.addEventListener('click', (event) => {
+    const taskId = event.target.closest('.task')?.id.split('-')[1];
+    if (taskId && taskElementsMap[taskId]) {
+      fetchTaskDetails(taskId).then((task) => {
+        modal.dataset.taskId = task.id;
+        Object.assign(taskForm, {
+          title: { value: task.title },
+          description: { value: task.description },
+          status: { value: task.status },
+          result: { value: task.result },
+        });
+        modal.classList.remove('hidden');
       });
+    }
   });
 
   closeModal.addEventListener('click', () => {
       modal.classList.add('hidden');
   });
 
-  saveTaskButton.addEventListener('click', () => {
+  saveTaskButton.addEventListener('click', async () => {
       const taskId = modal.dataset.taskId;
+      const taskForm = document.getElementById('task-form');
+      const formData = new FormData(taskForm);
       const updatedTask = {
-          title: document.getElementById('task-title').value,
-          description: document.getElementById('task-description').value,
-          status: document.getElementById('task-status').value,
-          result: document.getElementById('task-result').value,
+          title: formData.get('title'),
+          description: formData.get('description'),
+          status: formData.get('status'),
+          result: formData.get('result'),
       };
 
-      fetch(`${u4uURL}/tasks/${taskId}`, {
-          method: 'PUT',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedTask),
-      })
-          .then((response) => {
-              if (!response.ok) throw new Error('Failed to save task');
-              return response.json();
-          })
-          .then(() => {
-              modal.classList.add('hidden');
-              location.reload(); // Refresh the page to update tasks
-          })
-          .catch((error) => console.error('Error updating task:', error));
+      try {
+          const response = await fetch(`${u4uURL}/tasks/${taskId}`, {
+              method: 'PUT',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(updatedTask),
+          });
+
+          if (!response.ok) throw new Error('Failed to save task');
+
+          modal.classList.add('hidden');
+          location.reload(); // Refresh the page to update tasks
+      } catch (error) {
+          console.error('Error updating task:', error);
+      }
   });
+
 });
