@@ -36,7 +36,7 @@ async def create_task(task: dict):
     return await TASKS.insert(task)
 
 
-@router.get("/api/u4u/tasks/{task_id}")
+@router.get("/tasks/{task_id}")
 async def get_task(task_id: int, request: Request) -> dict:
     task = await TASKS.find({'id': task_id})
     if not task:
