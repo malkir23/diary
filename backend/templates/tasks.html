@@ -11,6 +11,7 @@
 
 		<div class="navigation">
 			<button onclick="location.href='/api/u4u/table'" class="nav-button">До списку</button>
+			<button onclick="location.href='/api/u4u/categories/list'" class="nav-button">Категорії</button>
 		</div>
 
     <!-- Form for adding new tasks -->
@@ -21,7 +22,7 @@
             <input type="text" id="task-title" name="title" required>
 
             <label for="task-description">Description:</label>
-						<textarea id="task-description" name="description" required></textarea>
+						<textarea id="task-description" cols="30" rows="10" name="description" required></textarea>
 
             <label for="task-status">Status:</label>
             <select id="task-status" name="status">
@@ -66,7 +67,7 @@
 								{% for task in tasks %}
 								<tr id="task-row-{{ task.id }}">
 									<td class="task-title"><input type="text" value="{{ task.title }}" disabled></td>
-									<td class="task-description"><textarea disabled>{{ task.description }}</textarea></td>
+									<td class="task-description"><textarea cols="30" rows="10" disabled>{{ task.description }}</textarea></td>
 									<td class="task-status">
 										<select value="{{ task.status }}" disabled>
 											{% for value, status in statuses.items() %}
