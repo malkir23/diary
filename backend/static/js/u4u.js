@@ -53,7 +53,7 @@ tables.forEach((table) => {
 
 async function updateTaskStatus(taskId, newStatus) {
   await fetch(`${u4uURL}/tasks/${taskId}`, {
-    method: 'PATCH',
+    method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status: newStatus }),
   });
