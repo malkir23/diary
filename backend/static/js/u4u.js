@@ -90,7 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.dataset.taskId = task.id;
         const filds = ['title', 'description', 'status', 'result'];
         for (let index = 0; index < filds.length; index++) {
-          taskForm.children[element].value = task[element];
+          const fieldName = filds[index];
+          taskForm.children[fieldName].value = task[fieldName];
 
         }
         Object.assign(taskForm, {
