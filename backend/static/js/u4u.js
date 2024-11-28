@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.dataset.taskId = task.id;
         Object.assign(taskForm, {
           title: { value: task.title },
-          description: { value: task.description },
+          // description: { value: task.description },
           status: { value: task.status },
           result: { value: task.result },
         });
