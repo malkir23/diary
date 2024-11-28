@@ -88,10 +88,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (taskId && taskElementsMap[taskId]) {
       fetchTaskDetails(taskId).then((task) => {
         modal.dataset.taskId = task.id;
-        const filds = modal.querySelectorAll('input, textarea');
-        filds.forEach((element, index) => {
-          element.value = task[index];
-        });
+        const filds = ['title', 'description', 'status', 'result'];
+        for (let index = 0; index < filds.length; index++) {
+          taskForm.children[element].value = task[element];
+
+        }
         Object.assign(taskForm, {
           title: { value: task.title },
           description: { value: task.description },
