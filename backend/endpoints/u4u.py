@@ -36,6 +36,13 @@ async def create_task(task: dict):
     return await TASKS.insert(task)
 
 
+@router.get("/api/u4u/tasks/{task_id}")
+def get_task(task_id: int, request: Request) -> dict:
+    task =  TASKS.find({'id': task_id})
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return task
+
 @router.get("/tasks/list", response_class=HTMLResponse)
 async def list_tasks(request: Request):
     tasks = await TASKS.find()
