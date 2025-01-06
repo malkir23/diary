@@ -5,8 +5,8 @@ from fastapi.responses import RedirectResponse
 from backend.quaries.users import Users
 from backend.models.users import CreateUserSchema
 from backend.services.user import PasswordService, UserSerializers
-from backend.services.email import EmailService
-from backend.services.oauth2 import create_token, set_auth_tokens, check_auth
+# from backend.services.email import EmailService
+# from backend.services.oauth2 import create_token, set_auth_tokens, check_auth
 
 
 router = APIRouter()
@@ -38,7 +38,7 @@ async def create_user(
     await Users.insert(user_data)
 
     # Compare password and password Confirm
-    await EmailService.verify_email(request, token, user_data, "register")
+    # await EmailService.verify_email(request, token, user_data, "register")
 
     return {
         "status": "success",

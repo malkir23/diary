@@ -10,7 +10,7 @@ from backend.quaries.u4u import TASKS, CATEGORYS
 
 # Configure Jinja2 environment
 TEMPLATES = Environment(
-    loader=PackageLoader("backend", "templates"),
+    loader=PackageLoader("frontend", "templates"),
     autoescape=select_autoescape(["html", "xml"]),
 )
 

@@ -2,19 +2,20 @@ from fastapi import FastAPI, Depends, Request, HTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from .settings.config import CookieSettings
-from .endpoints import auth, users, downloads, u4u
-from fastapi_jwt_auth import AuthJWT
+from .endpoints import downloads, u4u
+# from fastapi_auth_jwt import AuthJWT
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from backend.db.base import init_db
 
 
-@AuthJWT.load_config
-def get_config():
-    return CookieSettings()
+# @AuthJWT.load_config
+# def get_config():
+#    return CookieSettings()
 
 
-backend = FastAPI(dependencies=[Depends(AuthJWT)])
+#backend = FastAPI(dependencies=[Depends(AuthJWT)])
+backend = FastAPI()
 origins = [
     # "http://localhost",
     # "http://localhost:5432",
@@ -42,7 +43,7 @@ async def block_ips_middleware(request: Request, call_next):
     return await call_next(request)
 
 
-backend.mount("/static", StaticFiles(directory="backend/static"), name="static")
+backend.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 # backend.include_router(auth.router, tags=["Auth"], prefix="/api/auth")

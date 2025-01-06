@@ -17,6 +17,8 @@ services:
       - postgres
     volumes:
       - .:/code
+    networks:
+      - app-network
 
   postgres:
     image: postgres:latest
@@ -33,3 +35,7 @@ services:
 
 volumes:
   postgres:
+
+networks:
+  app-network:
+    driver: bridge
